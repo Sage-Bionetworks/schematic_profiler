@@ -6,7 +6,6 @@ EXAMPLE_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/schemat
 HTAN_SCHEMA_URL = "https://raw.githubusercontent.com/ncihtan/data-models/main/HTAN.model.jsonld"
 DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_flow_component.jsonld"
 CONCURRENT_THREADS = 1
-RUN_TOTAL_TIMES_PER_ENDPOINT = 5
 
 base_url = "https://schematic-dev.api.sagebionetworks.org/v1/manifest/generate"
 
@@ -43,9 +42,25 @@ class GenerateExampleManifest():
                                     time_diff, CONCURRENT_THREADS, status_code_dict)
         
 
+    def generate_new_manifest_example_model_excel(self):
+        """
+        Generate a new manifest as an excel spreadsheet by using the example data model 
+        """
+        params = self.params
+        params["output"] = "excel"
+        try: 
+            # send request and calculate run time
+            dt_string, time_diff, status_code_dict = cal_time_api_call(base_url, params, CONCURRENT_THREADS)
+        except: 
+            print('there is an exception')
+
+        df = record_run_time_result("manifest/generate", dt_string, "Generating a manifest as an excel spreadsheet by using the example data model", 
+                                    time_diff, CONCURRENT_THREADS, status_code_dict)
+
 
 gm = GenerateExampleManifest()
 gm.generate_new_manifest_example_model()
+gm.generate_new_manifest_example_model_excel()
 
 
         

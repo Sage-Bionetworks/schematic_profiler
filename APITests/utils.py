@@ -52,7 +52,6 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
         time_diff: time of finish running all 
         all_status_code: dict; a dictionary that records the status code of run. 
     """
-    print('star tto run')
     start_time = time.time()
     # get time of running the api endpoint 
     now = datetime.now()
@@ -67,7 +66,7 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
         for f in concurrent.futures.as_completed(futures):
             try:
                 status_code = f.result().status_code
-                print('status code', status_code)
+                logger.debug('Status code', status_code)
                 status_code_str = str(status_code)
                 all_status_code[status_code_str] = all_status_code[status_code_str] + 1
             except Exception as exc:
