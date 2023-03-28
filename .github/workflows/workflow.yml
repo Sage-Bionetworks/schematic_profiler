@@ -2,9 +2,9 @@ name: aws-api-test
 
 on:
   pull_request:
-    branches: ['develop-add-tests'] # for testing purpose
+    branches: ['develop-add-tests'] # for testing purpose, added develop-add-tests
   push:
-    branches: ['develop']
+    branches: ['develop', 'develop-add-tests'] # for testing purpose, added develop-add-tests
   workflow_dispatch: # allow workflow to be manually triggered
 
 
