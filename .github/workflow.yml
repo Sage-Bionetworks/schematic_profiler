@@ -1,8 +1,8 @@
 name: aws-api-test
 
 on:
-  # pull_request:
-  #   branches: ['*']
+  pull_request:
+    branches: ['develop-add-tests'] #for testing purpose
   push:
     branches: ['develop']
   workflow_dispatch: #allow workflow to be manually triggered
@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: pip3 install -r requirements.txt
 
-      - name: commit files
+      - name: Commit files
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
@@ -48,7 +48,7 @@ jobs:
         with:
           branch: develop-update-latency
   
-      - name: create pull request
+      - name: Create pull request
       run: gh pr create -B develop -H develop-update-latency --title 'Updated latency' --body 'Created by Github action'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
