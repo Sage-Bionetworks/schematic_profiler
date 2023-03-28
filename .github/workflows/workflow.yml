@@ -46,7 +46,8 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           branch: develop-update-latency
-  
+
+
       - name: Create pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
