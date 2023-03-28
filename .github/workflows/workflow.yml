@@ -2,12 +2,11 @@ name: aws-api-test
 
 on:
   pull_request:
-    branches: ['develop-add-tests'] #for testing purpose
+    branches: ['develop-add-tests'] # for testing purpose
   push:
     branches: ['develop']
-  workflow_dispatch: #allow workflow to be manually triggered
+  workflow_dispatch: # allow workflow to be manually triggered
 
-concurrency: ci-${{ github.ref }}
 
 jobs:
   build:
@@ -29,7 +28,7 @@ jobs:
         run: |
           pip install --upgrade pip
           python3.10 -m venv venv
-          source env/bin/activate
+          source venv/bin/activate
 
       - name: Generate manifest test
         run: python APITests/manifest-generator.py
@@ -49,9 +48,10 @@ jobs:
           branch: develop-update-latency
   
       - name: Create pull request
-      run: gh pr create -B develop -H develop-update-latency --title 'Updated latency' --body 'Created by Github action'
-      env:
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr create -B develop -H develop-update-latency --title 'Updated latency' --body 'Created by Github action'
+
 
 
 
