@@ -1,0 +1,56 @@
+name: aws-api-test
+
+on:
+  # pull_request:
+  #   branches: ['*']
+  push:
+    branches: ['temp']
+
+concurrency: ci-${{ github.ref }}
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - uses: actions/checkout@v3
+        with:
+          ref: develop-update-latency
+
+      - name: Activate a virtual environment 
+        run: |
+          pip install --upgrade pip
+          python3.10 -m venv venv
+          source env/bin/activate
+
+      - name: Generate manifest test
+        run: python APITests/manifest-generator.py
+
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+
+      - name: commit files
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -a -m "Updated latency.csv"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: develop-update-latency
+  
+      - name: create pull request
+      run: gh pr create -B develop -H develop-update-latency --title 'Updated latency' --body 'Created by Github action'
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+
