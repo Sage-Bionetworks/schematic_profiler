@@ -4,7 +4,8 @@ on:
   # pull_request:
   #   branches: ['*']
   push:
-    branches: ['temp']
+    branches: ['develop']
+  workflow_dispatch: #allow workflow to be manually triggered
 
 concurrency: ci-${{ github.ref }}
 
