@@ -30,6 +30,8 @@ jobs:
         run: pip3 install -r requirements.txt
 
       - name: Generate manifest test
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: python APITests/manifest-generator.py
 
       - name: Commit files
