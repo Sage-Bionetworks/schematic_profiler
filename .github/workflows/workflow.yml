@@ -31,7 +31,8 @@ jobs:
 
       - name: Generate manifest test
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          SYNAPSE_ACCESS_TOKEN: ${{ secrets.SYNAPSE_ACCESS_TOKEN }}
+          SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
         run: python APITests/manifest-generator.py
 
       - name: Commit files
