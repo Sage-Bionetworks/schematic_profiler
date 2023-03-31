@@ -26,11 +26,11 @@ jobs:
           python3.10 -m venv venv
           source venv/bin/activate
 
-      - name: Generate manifest test
-        run: python APITests/manifest-generator.py
-
       - name: Install dependencies
         run: pip3 install -r requirements.txt
+
+      - name: Generate manifest test
+        run: python APITests/manifest-generator.py
 
       - name: Commit files
         run: |
