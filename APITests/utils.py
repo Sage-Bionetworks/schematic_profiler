@@ -31,10 +31,10 @@ def get_input_token() -> str:
     # else:
     #     # for running locally
     #     token = os.environ.get("TOKEN")
-    token = os.environ.get("TOKEN")
+    token = os.getenv("TOKEN")
     
     if token == "" or None: 
-        token = os.environ.get("ACCESS_TOKEN")
+        token = os.getenv("ACCESS_TOKEN")
     if token is None or "": 
         logger.error('Synapse access token is not found')
 
