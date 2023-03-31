@@ -1,5 +1,1 @@
 Endpoint name,Description,Test start time stamp,Number of concurrent requests,Latency,Status 200,Status 500,Status 504,Status 503
-manifest/generate,Generating a manifest as a google sheet by using the example data model,28/03/2023 15:09:49,1,7.33,1,0,0,0
-manifest/generate,Generating a manifest as a google sheet by using the example data model,28/03/2023 15:11:05,1,8.93,1,0,0,0
-manifest/generate,Generating a manifest as a google sheet by using the example data model,28/03/2023 15:15:13,1,18.02,1,0,0,0
-manifest/generate,Generating a manifest as an excel spreadsheet by using the example data model,28/03/2023 15:15:31,1,7.05,1,0,0,0
