@@ -47,7 +47,6 @@ jobs:
         with:
           branch: develop-update-latency
 
-
       - name: Create pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

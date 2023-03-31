@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 import logging
 import pandas as pd
+import pytz
 
 logger = logging.getLogger(__name__)
 logger = logging.getLogger('api')
@@ -49,7 +50,7 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
     """
     start_time = time.time()
     # get time of running the api endpoint 
-    now = datetime.now()
+    now = datetime.now(pytz.timezone('US/Pacific'))
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
     # execute concurrent requests
