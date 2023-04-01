@@ -52,7 +52,7 @@ def login_synapse():
         syn = synapseclient.Synapse()
 
         # syn.default_headers["Authorization"] = f"Bearer {token}"
-        syn.login(authToken=token, silent=True)
+        syn.login(authToken=token, rememberMe=True)
     except synapseclient.core.exceptions.SynapseNoCredentialsError:
         raise ValueError("No synapse token found. ")
     except synapseclient.core.exceptions.SynapseHTTPError:
