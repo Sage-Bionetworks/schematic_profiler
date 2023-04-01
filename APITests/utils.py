@@ -31,6 +31,9 @@ def get_input_token() -> str:
     # for running on github action
     if "SYNAPSE_ACCESS_TOKEN" in os.environ:
         token = os.environ["SYNAPSE_ACCESS_TOKEN"]
+        logger.debug(
+            "Successfully found synapse access token"
+        )  # TO DO: delete this later
     else:
         token = os.environ["TOKEN"]
     if token is None or "":
@@ -48,7 +51,7 @@ def login_synapse():
     try:
         syn = synapseclient.Synapse()
 
-        syn.default_headers["Authorization"] = f"Bearer {token}"
+        # syn.default_headers["Authorization"] = f"Bearer {token}"
         syn.login(authToken=token, silent=True)
     except synapseclient.core.exceptions.SynapseNoCredentialsError:
         raise ValueError("No synapse token found. ")
@@ -142,6 +145,7 @@ def record_run_time_result(
     df_latest_latency = df_existing_latency.append(df_new_latency)
 
     upload_result_to_synapse(df_latest_latency, syn)
+    logger.info("Finish uploading result to synapse. ")
 
     return df_latest_latency
 
