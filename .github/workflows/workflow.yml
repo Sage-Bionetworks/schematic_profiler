@@ -35,24 +35,3 @@ jobs:
           SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
         run: python APITests/manifest-generator.py
 
-      - name: Commit files
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add "latency.csv"
-          git commit -m "Updated latency.csv"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: develop-update-latency
-
-
-      - name: Create pull request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create -B develop -H develop-update-latency --title 'Updated latency' --body 'Created by Github action'
-
-
-
-
