@@ -47,12 +47,13 @@ def login_synapse():
     token = get_input_token()
     try:
         syn = synapseclient.Synapse()
+
         syn.default_headers["Authorization"] = f"Bearer {token}"
-        syn.login(sessionToken=token, silent=True)
+        syn.login(authToken=token, silent=True)
+    except synapseclient.core.exceptions.SynapseNoCredentialsError:
+        raise ValueError("No synapse token found. ")
     except synapseclient.core.exceptions.SynapseHTTPError:
-        raise ValueError(
-            "No access to resources. Please make sure that your token is correct"
-        )
+        raise ValueError("Please make sure you are logged into synapse.org.")
     return syn
 
 
