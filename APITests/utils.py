@@ -48,7 +48,7 @@ def login_synapse():
     try:
         syn = synapseclient.Synapse()
         syn.default_headers["Authorization"] = f"Bearer {token}"
-        syn.login(silent=True)
+        syn.login(sessionToken=token, silent=True)
     except synapseclient.core.exceptions.SynapseHTTPError:
         raise ValueError(
             "No access to resources. Please make sure that your token is correct"
