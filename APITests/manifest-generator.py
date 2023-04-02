@@ -77,5 +77,5 @@ class GenerateExampleManifest:
 
 
 gm = GenerateExampleManifest()
-# gm.generate_new_manifest_example_model()
+gm.generate_new_manifest_example_model()
 gm.generate_new_manifest_example_model_excel()
