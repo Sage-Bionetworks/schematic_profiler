@@ -9,8 +9,10 @@ import pandas as pd
 import synapseclient
 from synapseclient import File
 
-logger = logging.getLogger(__name__)
-logger = logging.getLogger("api")
+
+logging.basicConfig(format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p")
+logging.getLogger("utils").setLevel(logging.INFO)
+logger = logging.getLogger("utils")
 
 
 def fetch(url: str, params: dict):
@@ -21,6 +23,22 @@ def fetch(url: str, params: dict):
         params: parameter of running a given api request
     """
     return requests.get(url, params=params)
+
+
+def return_time_now(name_funct_call=None) -> str:
+    """
+    Get the time now
+    Args:
+        name_funct_call: name of function call
+    return: current time formatted as "%d/%m/%Y %H:%M:%S" as a string
+    """
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+    if name_funct_call:
+        logger.info(f"{name_funct_call}")
+
+    return dt_string
 
 
 def get_input_token() -> str:
@@ -68,13 +86,13 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
         params: dict; the parameters need to use for the request
         concurrent_thread: integer; number of concurrent threads requested by users
     return:
-        time_diff: time of finish running all
+        dt_string: start time of running the API endpoints.
+        time_diff: time of finish running all requests.
         all_status_code: dict; a dictionary that records the status code of run.
     """
     start_time = time.time()
     # get time of running the api endpoint
-    now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    dt_string = return_time_now()
 
     # execute concurrent requests
     with ThreadPoolExecutor() as executor:
@@ -92,7 +110,7 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
                 logger.error(f"generated an exception:{exc}")
 
     time_diff = round(time.time() - start_time, 2)
-    logger.info(f"duration time of running {url}", time_diff)
+    logger.info(f"duration time of running {url}: {time_diff}")
     return dt_string, time_diff, all_status_code
 
 
@@ -112,6 +130,9 @@ def record_run_time_result(
     return:
     a dataframe that record results of the run time
     """
+    # for debugging github action
+    return_time_now("Record run time")
+
     # get specific number of status code
     num_status_200 = status_code_dict["200"]
     num_status_500 = status_code_dict["500"]
@@ -157,6 +178,8 @@ def upload_result_to_synapse(df, syn):
     df: dataframe to upload
     syn: synapse obj
     """
+    # for debugging github action
+    return_time_now("Upload result to synapse")
 
     # save dataframe to a csv
     df.to_csv("latency.csv", index=False, header=True)
