@@ -10,7 +10,11 @@ import synapseclient
 from synapseclient import File
 
 
-logging.basicConfig(format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p")
+logging.basicConfig(
+    format=("%(levelname)s: [%(asctime)s] %(name)s" " - %(message)s"),
+    level=logging.WARNING,
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 logging.getLogger("utils").setLevel(logging.INFO)
 logger = logging.getLogger("utils")
 
@@ -36,7 +40,9 @@ def return_time_now(name_funct_call=None) -> str:
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
     if name_funct_call:
-        logger.info(f"{name_funct_call}")
+        logger.info(
+            f"when running {name_funct_call} function, the time is: {dt_string}"
+        )
 
     return dt_string
 
