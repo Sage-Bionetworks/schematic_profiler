@@ -127,8 +127,28 @@ class GenerateExampleManifest:
             status_code_dict,
         )
 
+    def generate_existing_manifest_google_sheet(self):
+        """
+        Generate a new manifest as a google sheet by using the existing manifest
+        """
+        params = self.params
+        params["dataset_id"] = "syn51078367"
+        params["asset_view"] = "syn23643253"
+
+        dt_string, time_diff, status_code_dict = self.send_request()
+
+        self.record_runtime(
+            "manifest/generate",
+            dt_string,
+            "Generating an existing manifest as a google sheet by using the example data model",
+            time_diff,
+            CONCURRENT_THREADS,
+            status_code_dict,
+        )
+
 
 gm_example = GenerateExampleManifest(EXAMPLE_SCHEMA_URL)
+gm_example.generate_existing_manifest_google_sheet()
 gm_example.generate_new_manifest_example_model()
 gm_example.generate_new_manifest_example_model_excel("excel")
 
