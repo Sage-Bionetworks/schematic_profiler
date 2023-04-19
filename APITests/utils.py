@@ -1,5 +1,6 @@
 import os
 import time
+import pytz
 import logging
 from datetime import datetime
 import concurrent.futures
@@ -36,7 +37,7 @@ def return_time_now(name_funct_call=None) -> str:
         name_funct_call: name of function call
     return: current time formatted as "%d/%m/%Y %H:%M:%S" as a string
     """
-    now = datetime.now()
+    now = datetime.now(pytz.timezone("US/Eastern"))
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
     if name_funct_call:
