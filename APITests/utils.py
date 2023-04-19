@@ -7,8 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 import pandas as pd
 import synapseclient
-from synapseclient import File
-
+from synapseclient.table import build_table
+from synapseclient import Schema, Column, Table, Row, RowSet, as_table_columns
 
 logging.basicConfig(
     format=("%(levelname)s: [%(asctime)s] %(name)s" " - %(message)s"),
@@ -109,8 +109,9 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
         for f in concurrent.futures.as_completed(futures):
             try:
                 status_code = f.result().status_code
-                logger.debug("Status code", status_code)
                 status_code_str = str(status_code)
+                if status_code != "200":
+                    logger.error(f"Error running: {url} using params {params}")
                 all_status_code[status_code_str] = all_status_code[status_code_str] + 1
             except Exception as exc:
                 logger.error(f"generated an exception:{exc}")
@@ -145,53 +146,26 @@ def record_run_time_result(
     num_status_504 = status_code_dict["504"]
     num_status_503 = status_code_dict["503"]
 
-    # create a dataframe
-    row = {
-        "Endpoint": endpoint_name,
-        "Description": description,
-        "Test start time": dt_string,
-        "Number of concurrent request": num_concurrent,
-        "Latency": latency,
-        "200": num_status_200,
-        "500": num_status_500,
-        "504": num_status_504,
-        "503": num_status_503,
-    }
-    df_new_latency = pd.DataFrame(row, index=[0])
-
     # Load existing data from synapse
     syn = login_synapse()
-    # download the latest file from synapse
-    file_info = syn.get("syn51277112", downloadFile=True)
-    file_path = file_info["path"]
 
-    # read the current csv
-    df_existing_latency = pd.read_csv(file_path, header=0)
+    # get existing table from synapse
+    existing_table_schema = syn.get("syn51365205")
+    new_row = [
+        [
+            endpoint_name,
+            description,
+            dt_string,
+            num_concurrent,
+            latency,
+            num_status_200,
+            num_status_500,
+            num_status_504,
+            num_status_503,
+        ]
+    ]
 
-    # update dataframe
-    df_latest_latency = df_existing_latency.append(df_new_latency)
+    # add new row to table
+    table = syn.store(Table(existing_table_schema, new_row))
 
-    upload_result_to_synapse(df_latest_latency, syn)
     logger.info("Finish uploading result to synapse. ")
-
-    return df_latest_latency
-
-
-def upload_result_to_synapse(df, syn):
-    """
-    Update a dataframe to synapse as a csv file
-    Args:
-    df: dataframe to upload
-    syn: synapse obj
-    """
-    # for debugging github action
-    return_time_now("Upload result to synapse")
-
-    # save dataframe to a csv
-    df.to_csv("latency.csv", index=False, header=True)
-
-    # upload to synapse
-    test_entity = File(
-        "latency.csv", description="Schematic api latency test", parent="syn51277111"
-    )
-    syn.store(test_entity)
