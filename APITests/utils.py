@@ -53,7 +53,10 @@ def get_input_token() -> str:
     return: a token to access asset store
     """
     # for running on github action
-    if "TOKEN" in os.environ:
+    if "SYNAPSE_AUTH_TOKEN" in os.environ:
+        token = os.environ["SYNAPSE_AUTH_TOKEN"]
+        logger.debug("Successfully found synapse access token")
+    else:
         token = os.environ["TOKEN"]
     if token is None or "":
         logger.error("Synapse access token is not found")
