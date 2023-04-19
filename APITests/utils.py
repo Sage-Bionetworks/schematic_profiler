@@ -53,12 +53,7 @@ def get_input_token() -> str:
     return: a token to access asset store
     """
     # for running on github action
-    if "SYNAPSE_ACCESS_TOKEN" in os.environ:
-        token = os.environ["SYNAPSE_ACCESS_TOKEN"]
-        logger.debug(
-            "Successfully found synapse access token"
-        )  # TO DO: delete this later
-    else:
+    if "TOKEN" in os.environ:
         token = os.environ["TOKEN"]
     if token is None or "":
         logger.error("Synapse access token is not found")
@@ -76,7 +71,7 @@ def login_synapse():
         syn = synapseclient.Synapse()
 
         # syn.default_headers["Authorization"] = f"Bearer {token}"
-        syn.login(authToken=token, rememberMe=True)
+        syn.login(rememberMe=True)
     except synapseclient.core.exceptions.SynapseNoCredentialsError:
         raise ValueError("No synapse token found. ")
     except synapseclient.core.exceptions.SynapseHTTPError:
