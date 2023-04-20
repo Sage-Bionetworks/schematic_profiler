@@ -1,8 +1,8 @@
 from utils import get_input_token, cal_time_api_call, record_run_time_result
-from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL
+from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
-base_url = "https://schematic-dev.api.sagebionetworks.org/v1/manifest/generate"
+base_url = f"{BASE_URL}/manifest/generate"
 
 
 class GenerateExampleManifest:
