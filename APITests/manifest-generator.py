@@ -1,13 +1,7 @@
 from utils import get_input_token, cal_time_api_call, record_run_time_result
+from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL
 
-EXAMPLE_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/schematic/develop/tests/data/example.model.jsonld"
-HTAN_SCHEMA_URL = (
-    "https://raw.githubusercontent.com/ncihtan/data-models/main/HTAN.model.jsonld"
-)
-
-DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_flow_component.jsonld"
 CONCURRENT_THREADS = 1
-
 base_url = "https://schematic-dev.api.sagebionetworks.org/v1/manifest/generate"
 
 
