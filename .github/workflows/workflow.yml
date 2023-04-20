@@ -1,0 +1,37 @@
+name: aws-api-test
+
+on:
+  pull_request:
+    branches: ['develop-add-tests'] # for testing purpose, added develop-add-tests
+  push:
+    branches: ['develop', 'develop-add-tests'] # for testing purpose, added develop-add-tests
+  workflow_dispatch: # allow workflow to be manually triggered
+
+
+jobs:
+  Benchmarch-Latency:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Activate a virtual environment 
+        run: |
+          pip install --upgrade pip
+          python3.10 -m venv venv
+          source venv/bin/activate
+
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+
+      - name: Generate manifest test
+        env:
+          SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
+          SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
+        run: python3 APITests/manifest-generator.py
+
