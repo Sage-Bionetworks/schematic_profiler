@@ -48,41 +48,13 @@ class GenerateExampleManifest:
             raise
         return dt_string, time_diff, status_code_dict
 
-    def record_runtime(
-        self,
-        endpoint_name,
-        dt_string,
-        description,
-        time_diff,
-        CONCURRENT_THREADS,
-        status_code_dict,
-    ):
-        """
-        record run time of API endpoints and upload the result as a CSV to synapse
-        Args:
-            endpoint_name: Name of endpoint (manifest/generate)
-            dt_string: start time of running the API endpoints.
-            description: description of the test
-            time_diff: latency of finishing running the API endpoint
-            concurrent_threads: Number of concurrent threads (defined as a global variable)
-            status_code_dict: status_code_dict: dictionary; dictionary of status code
-        """
-        record_run_time_result(
-            endpoint_name,
-            dt_string,
-            description,
-            time_diff,
-            CONCURRENT_THREADS,
-            status_code_dict,
-        )
-
     def generate_new_manifest_example_model(self):
         """
         Generate a new manifest as a google sheet by using the example data model
         """
         dt_string, time_diff, status_code_dict = self.send_request()
 
-        self.record_runtime(
+        record_run_time_result(
             "manifest/generate",
             dt_string,
             "Generating a manifest as a google sheet by using the example data model",
@@ -102,7 +74,7 @@ class GenerateExampleManifest:
 
         dt_string, time_diff, status_code_dict = self.send_request()
 
-        self.record_runtime(
+        record_run_time_result(
             "manifest/generate",
             dt_string,
             "Generating a manifest as an excel spreadsheet by using the example data model",
@@ -117,7 +89,7 @@ class GenerateExampleManifest:
         """
         dt_string, time_diff, status_code_dict = self.send_request()
 
-        self.record_runtime(
+        record_run_time_result(
             "manifest/generate",
             dt_string,
             "Generating a manifest as a google spreadsheet by using the HTAN data model",
@@ -136,7 +108,7 @@ class GenerateExampleManifest:
 
         dt_string, time_diff, status_code_dict = self.send_request()
 
-        self.record_runtime(
+        record_run_time_result(
             "manifest/generate",
             dt_string,
             "Generating an existing manifest as a google sheet by using the example data model",
