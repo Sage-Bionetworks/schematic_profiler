@@ -121,4 +121,6 @@ class ValidateManifest:
 
 vm_example_manifest = ValidateManifest(EXAMPLE_SCHEMA_URL)
 vm_example_manifest.validate_example_data_manifest()
-vm_example_manifest.validate_HTAN_data_manifest()
+
+vm_htan_manifest = ValidateManifest(HTAN_SCHEMA_URL)
+vm_htan_manifest.validate_HTAN_data_manifest()
