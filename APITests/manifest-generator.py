@@ -1,5 +1,4 @@
 from utils import get_input_token, cal_time_api_call, record_run_time_result
-import requests
 
 EXAMPLE_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/schematic/develop/tests/data/example.model.jsonld"
 HTAN_SCHEMA_URL = (

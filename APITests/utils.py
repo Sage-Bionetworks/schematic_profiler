@@ -8,8 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 import pandas as pd
 import synapseclient
-from synapseclient.table import build_table
-from synapseclient import Schema, Column, Table, Row, RowSet, as_table_columns
+from synapseclient import Table
 
 logging.basicConfig(
     format=("%(levelname)s: [%(asctime)s] %(name)s" " - %(message)s"),
@@ -76,10 +75,11 @@ def login_synapse():
 
         # syn.default_headers["Authorization"] = f"Bearer {token}"
         syn.login(rememberMe=True)
-    except synapseclient.core.exceptions.SynapseNoCredentialsError:
-        raise ValueError("No synapse token found. ")
-    except synapseclient.core.exceptions.SynapseHTTPError:
-        raise ValueError("Please make sure you are logged into synapse.org.")
+    except (
+        synapseclient.core.exceptions.SynapseNoCredentialsError,
+        synapseclient.core.exceptions.SynapseHTTPError,
+    ) as e:
+        raise e
     return syn
 
 
