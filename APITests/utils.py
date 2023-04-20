@@ -120,6 +120,47 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
     return dt_string, time_diff, all_status_code
 
 
+def cal_time_api_call_post_request(
+    url: str, params: dict, concurrent_threads: int, post_request_function_call
+):
+    """
+    calculate the latency of api calls.
+    Args:
+        url: str; the url that users want to access
+        params: dict; the parameters need to use for the request
+        concurrent_thread: integer; number of concurrent threads requested by users
+    return:
+        dt_string: start time of running the API endpoints.
+        time_diff: time of finish running all requests.
+        all_status_code: dict; a dictionary that records the status code of run.
+    """
+    start_time = time.time()
+    # get time of running the api endpoint
+    dt_string = return_time_now()
+
+    # execute concurrent requests
+    with ThreadPoolExecutor() as executor:
+        futures = [
+            executor.submit(post_request_function_call, url, params)
+            for x in range(concurrent_threads)
+        ]
+        all_status_code = {"200": 0, "500": 0, "503": 0, "504": 0}
+        for f in concurrent.futures.as_completed(futures):
+            try:
+                status_code = f.result().status_code
+                status_code_str = str(status_code)
+                if status_code_str != "200":
+                    print("error status code ahhhhh", status_code_str)
+                    logger.error(f"Error running: {url} using params {params}")
+                all_status_code[status_code_str] = all_status_code[status_code_str] + 1
+            except Exception as exc:
+                logger.error(f"generated an exception:{exc}")
+
+    time_diff = round(time.time() - start_time, 2)
+    logger.info(f"duration time of running {url}: {time_diff}")
+    return dt_string, time_diff, all_status_code
+
+
 def record_run_time_result(
     endpoint_name, dt_string, description, latency, num_concurrent, status_code_dict
 ):
