@@ -26,7 +26,7 @@ class ManifestSubmit:
             "input_token": self.token,
         }
 
-    def submit_example_manifeset_patient_as_table_and_file(self):
+    def submit_example_manifeset_patient(self):
         """
         submitting an example data manifest
         """
@@ -60,4 +60,4 @@ class ManifestSubmit:
 
 
 sm_example_manifest = ManifestSubmit(EXAMPLE_SCHEMA_URL)
-sm_example_manifest.submit_example_manifeset_patient_as_table_and_file()
+sm_example_manifest.submit_example_manifeset_patient()
