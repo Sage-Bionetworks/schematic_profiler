@@ -26,7 +26,7 @@ HTAN_SCHEMA_URL = (
 )
 
 DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_flow_component.jsonld"
-BASE_URL = "https://schematic-dev.api.sagebionetworks.org/v1/"
+BASE_URL = "https://schematic-dev.api.sagebionetworks.org/v1"
 
 
 def fetch(url: str, params: dict):
