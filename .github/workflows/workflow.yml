@@ -33,5 +33,5 @@ jobs:
         env:
           SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
           SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
-        run: python3 APITests/manifest-generator.py APITests/manifest-submit.py APITests/manifest-validate.py 
+        run: python3 APITests/manifest-generator.py APITests/manifest-submit.py APITests/manifest-validate.py APITest/manifest-storage.py
 
