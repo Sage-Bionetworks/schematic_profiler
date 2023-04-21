@@ -4,7 +4,7 @@ from utils import (
     record_run_time_result,
     send_request,
 )
-from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from utils import BASE_URL
 
 CONCURRENT_THREADS = 1
 
