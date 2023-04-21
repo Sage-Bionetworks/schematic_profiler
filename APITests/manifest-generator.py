@@ -26,7 +26,9 @@ class GenerateExampleManifest:
         """
         Generate a new manifest as a google sheet by using the example data model
         """
-        dt_string, time_diff, status_code_dict = send_request()
+        dt_string, time_diff, status_code_dict = send_request(
+            base_url, self.params, CONCURRENT_THREADS
+        )
 
         record_run_time_result(
             "manifest/generate",
@@ -46,7 +48,9 @@ class GenerateExampleManifest:
         params = self.params
         params["output"] = output_format
 
-        dt_string, time_diff, status_code_dict = send_request()
+        dt_string, time_diff, status_code_dict = send_request(
+            base_url, self.params, CONCURRENT_THREADS
+        )
 
         record_run_time_result(
             "manifest/generate",
@@ -61,7 +65,9 @@ class GenerateExampleManifest:
         """
         Generate a new manifest as a google sheet by using the HTAN manifest
         """
-        dt_string, time_diff, status_code_dict = send_request()
+        dt_string, time_diff, status_code_dict = send_request(
+            base_url, self.params, CONCURRENT_THREADS
+        )
 
         record_run_time_result(
             "manifest/generate",
@@ -80,7 +86,9 @@ class GenerateExampleManifest:
         params["dataset_id"] = "syn51078367"
         params["asset_view"] = "syn23643253"
 
-        dt_string, time_diff, status_code_dict = send_request()
+        dt_string, time_diff, status_code_dict = send_request(
+            base_url, self.params, CONCURRENT_THREADS
+        )
 
         record_run_time_result(
             "manifest/generate",
