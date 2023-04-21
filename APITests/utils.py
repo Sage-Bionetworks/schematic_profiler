@@ -39,6 +39,49 @@ def fetch(url: str, params: dict):
     return requests.get(url, params=params)
 
 
+def send_example_patient_manifest(url: str, params: dict):
+    """
+    sending an example patient manifest to validate
+    """
+    return requests.post(
+        url,
+        params=params,
+        files={
+            "file_name": open(
+                "test_manifests/synapse_storage_manifest_patient.csv", "rb"
+            )
+        },
+    )
+
+
+def send_post_request(
+    params: dict, base_url: str, concurrent_threads: int, manifest_to_validate_funct
+):
+    """
+    sending post requests to manifest/validate endpoint
+    Args:
+        params: a dictionary of parameters to send
+        base_url: url of endpoint
+        concurrent_threads: number of concurrent threads
+        manifest_to_validate_funct: a function; a function call that determines
+    Return:
+        dt_string: start time of running the API endpoints.
+        time_diff: time of finish running all requests.
+        all_status_code: dict; a dictionary that records the status code of run.
+    """
+    try:
+        # send request and calculate run time
+        dt_string, time_diff, status_code_dict = cal_time_api_call_post_request(
+            base_url, params, concurrent_threads, manifest_to_validate_funct
+        )
+    # TO DO: add more details about raising different exception
+    # Should exception based on response type?
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
+        raise
+    return dt_string, time_diff, status_code_dict
+
+
 def return_time_now(name_funct_call=None) -> str:
     """
     Get the time now
@@ -138,7 +181,7 @@ def cal_time_api_call_post_request(
     Args:
         url: str; the url that users want to access
         params: dict; the parameters need to use for the request
-        concurrent_thread: integer; number of concurrent threads requested by users
+        concurrent_threads: integer; number of concurrent threads requested by users
     return:
         dt_string: start time of running the API endpoints.
         time_diff: time of finish running all requests.
