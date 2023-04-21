@@ -82,6 +82,31 @@ def send_post_request(
     return dt_string, time_diff, status_code_dict
 
 
+def send_request(params: dict, base_url: str, concurrent_threads: int):
+    """
+    sending requests to manifest/generate endpoint
+    Args:
+        params: a dictionary of parameters to send
+        base_url: url of endpoint
+        concurrent_threads: number of concurrent threads
+    Return:
+        dt_string: start time of running the API endpoints.
+        time_diff: time of finish running all requests.
+        all_status_code: dict; a dictionary that records the status code of run.
+    """
+    try:
+        # send request and calculate run time
+        dt_string, time_diff, status_code_dict = cal_time_api_call(
+            base_url, params, concurrent_threads
+        )
+    # TO DO: add more details about raising different exception
+    # Should exception based on response type?
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
+        raise
+    return dt_string, time_diff, status_code_dict
+
+
 def return_time_now(name_funct_call=None) -> str:
     """
     Get the time now

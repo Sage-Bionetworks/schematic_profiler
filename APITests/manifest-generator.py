@@ -1,4 +1,4 @@
-from utils import get_input_token, cal_time_api_call, record_run_time_result
+from utils import get_input_token, record_run_time_result, send_request
 from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
@@ -22,31 +22,11 @@ class GenerateExampleManifest:
             "input_token": self.token,
         }
 
-    def send_request(self):
-        """
-        sending requests to manifest/generate endpoint
-        Return:
-            dt_string: start time of running the API endpoints.
-            time_diff: time of finish running all requests.
-            all_status_code: dict; a dictionary that records the status code of run.
-        """
-        try:
-            # send request and calculate run time
-            dt_string, time_diff, status_code_dict = cal_time_api_call(
-                base_url, self.params, CONCURRENT_THREADS
-            )
-        # TO DO: add more details about raising different exception
-        # Should exception based on response type?
-        except Exception as err:
-            print(f"Unexpected {err=}, {type(err)=}")
-            raise
-        return dt_string, time_diff, status_code_dict
-
     def generate_new_manifest_example_model(self):
         """
         Generate a new manifest as a google sheet by using the example data model
         """
-        dt_string, time_diff, status_code_dict = self.send_request()
+        dt_string, time_diff, status_code_dict = send_request()
 
         record_run_time_result(
             "manifest/generate",
@@ -66,7 +46,7 @@ class GenerateExampleManifest:
         params = self.params
         params["output"] = output_format
 
-        dt_string, time_diff, status_code_dict = self.send_request()
+        dt_string, time_diff, status_code_dict = send_request()
 
         record_run_time_result(
             "manifest/generate",
@@ -81,7 +61,7 @@ class GenerateExampleManifest:
         """
         Generate a new manifest as a google sheet by using the HTAN manifest
         """
-        dt_string, time_diff, status_code_dict = self.send_request()
+        dt_string, time_diff, status_code_dict = send_request()
 
         record_run_time_result(
             "manifest/generate",
@@ -100,7 +80,7 @@ class GenerateExampleManifest:
         params["dataset_id"] = "syn51078367"
         params["asset_view"] = "syn23643253"
 
-        dt_string, time_diff, status_code_dict = self.send_request()
+        dt_string, time_diff, status_code_dict = send_request()
 
         record_run_time_result(
             "manifest/generate",
