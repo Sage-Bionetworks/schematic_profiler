@@ -41,7 +41,7 @@ def fetch(url: str, params: dict):
 
 def send_example_patient_manifest(url: str, params: dict):
     """
-    sending an example patient manifest to validate
+    sending an example patient manifest
     """
     return requests.post(
         url,
@@ -55,7 +55,7 @@ def send_example_patient_manifest(url: str, params: dict):
 
 
 def send_post_request(
-    params: dict, base_url: str, concurrent_threads: int, manifest_to_validate_funct
+    params: dict, base_url: str, concurrent_threads: int, manifest_to_send_func
 ):
     """
     sending post requests to manifest/validate endpoint
@@ -63,7 +63,7 @@ def send_post_request(
         params: a dictionary of parameters to send
         base_url: url of endpoint
         concurrent_threads: number of concurrent threads
-        manifest_to_validate_funct: a function; a function call that determines
+        manifest_to_send_func: a function that sends a post request that upload a manifest to be sent
     Return:
         dt_string: start time of running the API endpoints.
         time_diff: time of finish running all requests.
@@ -72,7 +72,7 @@ def send_post_request(
     try:
         # send request and calculate run time
         dt_string, time_diff, status_code_dict = cal_time_api_call_post_request(
-            base_url, params, concurrent_threads, manifest_to_validate_funct
+            base_url, params, concurrent_threads, manifest_to_send_func
         )
     # TO DO: add more details about raising different exception
     # Should exception based on response type?
@@ -199,7 +199,7 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
 
 
 def cal_time_api_call_post_request(
-    url: str, params: dict, concurrent_threads: int, post_request_function_call
+    url: str, params: dict, concurrent_threads: int, manifest_to_send_func
 ):
     """
     calculate the latency of api calls.
@@ -207,6 +207,7 @@ def cal_time_api_call_post_request(
         url: str; the url that users want to access
         params: dict; the parameters need to use for the request
         concurrent_threads: integer; number of concurrent threads requested by users
+        manifest_to_send_func: a function that sends a post request that upload a manifest to be sent
     return:
         dt_string: start time of running the API endpoints.
         time_diff: time of finish running all requests.
@@ -219,7 +220,7 @@ def cal_time_api_call_post_request(
     # execute concurrent requests
     with ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(post_request_function_call, url, params)
+            executor.submit(manifest_to_send_func, url, params)
             for x in range(concurrent_threads)
         ]
         all_status_code = {"200": 0, "500": 0, "503": 0, "504": 0}
