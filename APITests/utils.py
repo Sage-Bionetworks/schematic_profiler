@@ -58,7 +58,7 @@ def send_post_request(
     params: dict, base_url: str, concurrent_threads: int, manifest_to_send_func
 ):
     """
-    sending post requests to manifest/validate endpoint
+    sending post requests
     Args:
         params: a dictionary of parameters to send
         base_url: url of endpoint
