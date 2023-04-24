@@ -26,7 +26,11 @@ jobs:
         run: pip3 install -r requirements.txt
 
       # create documentation
-      - run: pdoc --docformat google -o docs/api_test APITests/manifest-generator.py
+      - name: Run pdoc to create documentation 
+        env:
+          SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
+          SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
+        run: pdoc --docformat google -o docs/api_test APITests/manifest-generator.py APITests/manifest-storage.py APITests/manifest-submit.py APITests/manifest-validate.py APITests/utils.py
 
       - uses: actions/upload-pages-artifact@v1
         with:
