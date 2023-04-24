@@ -1,6 +1,5 @@
 from utils import (
     get_input_token,
-    cal_time_api_call,
     record_run_time_result,
     send_request,
 )
@@ -14,6 +13,8 @@ class ManifestStorageAPI:
         self.token = get_input_token()
         self.params = {"input_token": self.token}
 
+
+class RetrieveAssetView(ManifestStorageAPI):
     def retrieve_asset_view_as_json(self):
         """
         Retrieve asset view table as a dataframe.
@@ -41,17 +42,19 @@ class ManifestStorageAPI:
             status_code_dict=status_code_dict,
         )
 
-    def retrieve_project_datasets(self):
-        """
-        Retrieve all datasets under a given project
-        """
-        # define base_url
-        base_url = f"{BASE_URL}/storage/project/datasets"
 
-        # define the asset view to retrieve
+class RestrieveProjectDataset(ManifestStorageAPI):
+    def retrieve_project_dataset_api_call(self, project_id: str, asset_view: str):
+        """
+        Make the API calls to retrieve all datasets from a given project
+        Args:
+            project_id: ID of a storage project.
+            asset_view: ID of view listing all project data assets.
+        """
+        base_url = f"{BASE_URL}/storage/project/datasets"
         params = self.params
-        asset_view = "syn23643253"
-        project_id = "syn26251192"
+
+        # update parameter
         params["asset_view"] = asset_view
         params["project_id"] = project_id
 
@@ -68,7 +71,30 @@ class ManifestStorageAPI:
             status_code_dict=status_code_dict,
         )
 
+    def retrieve_project_datasets_test(self):
+        """
+        Retrieve all datasets under a given example project
+        """
+        # define the asset view to retrieve
+        asset_view = "syn23643253"
+        project_id = "syn26251192"
 
-manifest_storage_class = ManifestStorageAPI()
-manifest_storage_class.retrieve_asset_view_as_json()
-manifest_storage_class.retrieve_project_datasets()
+        self.retrieve_project_dataset_api_call(project_id, asset_view)
+
+    def retrieve_project_datasets_HTAN(self):
+        """
+        Retrieve all datasets under a given testing HTAN project (used by DCA)
+        """
+        # define the asset view to retrieve
+        asset_view = "syn20446927"  # htan asset view
+        project_id = "syn32596076"  # htan center c
+
+        self.retrieve_project_dataset_api_call(project_id, asset_view)
+
+
+retrieve_asset_view_class = RetrieveAssetView()
+retrieve_asset_view_class.retrieve_asset_view_as_json()
+
+retrieve_project_dataset = RestrieveProjectDataset()
+retrieve_project_dataset.retrieve_project_datasets_test()
+retrieve_project_dataset.retrieve_project_datasets_HTAN()
