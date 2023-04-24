@@ -41,6 +41,34 @@ class ManifestStorageAPI:
             status_code_dict=status_code_dict,
         )
 
+    def retrieve_project_datasets(self):
+        """
+        Retrieve all datasets under a given project
+        """
+        # define base_url
+        base_url = f"{BASE_URL}/storage/project/datasets"
+
+        # define the asset view to retrieve
+        params = self.params
+        asset_view = "syn23643253"
+        project_id = "syn26251192"
+        params["asset_view"] = asset_view
+        params["project_id"] = project_id
+
+        dt_string, time_diff, status_code_dict = send_request(
+            base_url, params, CONCURRENT_THREADS
+        )
+
+        record_run_time_result(
+            endpoint_name="storage/project/datasets",
+            description=f"Retrieve all datasets under project {project_id} in asset view {asset_view} as a json",
+            dt_string=dt_string,
+            num_concurrent=CONCURRENT_THREADS,
+            latency=time_diff,
+            status_code_dict=status_code_dict,
+        )
+
 
 manifest_storage_class = ManifestStorageAPI()
 manifest_storage_class.retrieve_asset_view_as_json()
+manifest_storage_class.retrieve_project_datasets()
