@@ -6,6 +6,7 @@ from datetime import datetime
 import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
 import requests
+from requests.exceptions import InvalidSchema
 import pandas as pd
 import synapseclient
 from synapseclient import Table
@@ -55,7 +56,7 @@ def send_example_patient_manifest(url: str, params: dict):
 
 
 def send_post_request(
-    params: dict, base_url: str, concurrent_threads: int, manifest_to_send_func
+    base_url: str, params: dict, concurrent_threads: int, manifest_to_send_func
 ):
     """
     sending post requests
@@ -82,7 +83,7 @@ def send_post_request(
     return dt_string, time_diff, status_code_dict
 
 
-def send_request(params: dict, base_url: str, concurrent_threads: int):
+def send_request(base_url: str, params: dict, concurrent_threads: int):
     """
     sending requests to manifest/generate endpoint
     Args:
@@ -190,8 +191,10 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
                 if status_code_str != "200":
                     logger.error(f"Error running: {url} using params {params}")
                 all_status_code[status_code_str] = all_status_code[status_code_str] + 1
-            except Exception as exc:
-                logger.error(f"generated an exception:{exc}")
+            except InvalidSchema:
+                raise InvalidSchema(
+                    f"No connection adapters were found for {url}. Please make sure that your URL is correct. "
+                )
 
     time_diff = round(time.time() - start_time, 2)
     logger.info(f"duration time of running {url}: {time_diff}")
@@ -231,8 +234,10 @@ def cal_time_api_call_post_request(
                 if status_code_str != "200":
                     logger.error(f"Error running: {url} using params {params}")
                 all_status_code[status_code_str] = all_status_code[status_code_str] + 1
-            except Exception as exc:
-                logger.error(f"generated an exception:{exc}")
+            except InvalidSchema:
+                raise InvalidSchema(
+                    f"No connection adapters were found for {url}. Please make sure that your URL is correct. "
+                )
 
     time_diff = round(time.time() - start_time, 2)
     logger.info(f"duration time of running {url}: {time_diff}")
@@ -240,17 +245,37 @@ def cal_time_api_call_post_request(
 
 
 def record_run_time_result(
-    endpoint_name, dt_string, description, latency, num_concurrent, status_code_dict
+    endpoint_name: str,
+    description: str,
+    dt_string: str,
+    num_concurrent: int,
+    latency: float,
+    status_code_dict: dict,
+    data_schema: str = None,
+    num_rows: int = None,
+    data_type: str = None,
+    output_format: str = None,
+    restrict_rules: bool = None,
+    manifest_record_type: str = None,
 ):
     """
     Record the result of running an endpoint as a dataframe
     Args:
-    endpoint_name: str; name of the endpoint being run.
-    dt_string: str; start time of the test
+    Required params:
+    endpoint_name: str; name of the endpoint being run
     description: str; more details description of the case being run
-    latency: number; latency of finishing the run
     num_concurrent: integer; number of concurrent requests
+    latency: double; latency of finishing the run
     status_code_dict: dictionary; dictionary of status code
+
+    Optional params:
+    data_schema: str; the data schema used by the function
+    num_rows: int; number of rows of a given manifest
+    data_type: str; data type/component being used
+    output_format: str; output format of a given manifest
+    restrict_rules: bool; if restrict_rules parameter gets set to true
+    dt_string: str; start time of the test
+    manifest_record_type: Manifest storage type. Four options: file only, file+entities, table+file, table+file+entities
 
     return:
     a dataframe that record results of the run time
@@ -268,12 +293,18 @@ def record_run_time_result(
     syn = login_synapse()
 
     # get existing table from synapse
-    existing_table_schema = syn.get("syn51365205")
+    existing_table_schema = syn.get("syn51385540")
     new_row = [
         [
             endpoint_name,
             description,
+            data_schema,
+            num_rows,
+            data_type,
+            output_format,
+            restrict_rules,
             dt_string,
+            manifest_record_type,
             num_concurrent,
             latency,
             num_status_200,

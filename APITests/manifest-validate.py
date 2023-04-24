@@ -49,15 +49,20 @@ class ValidateManifest:
             params["restrict_rules"] = opt
 
             dt_string, time_diff, status_code_dict = send_post_request(
-                params, base_url, CONCURRENT_THREADS, send_example_patient_manifest
+                base_url, params, CONCURRENT_THREADS, send_example_patient_manifest
             )
 
             record_run_time_result(
                 "model/validate",
-                dt_string,
                 f"Validate an example data model using the patient component with restrict_rules set to {opt}. The manifest has 600 rows.",
-                time_diff,
+                "example data schema",
+                600,  # number of rows of the manifest being validated
+                params["data_type"],  # data type
+                None,  # output format not applicable
+                opt,  # Restrict rules is based on the option above,
+                dt_string,
                 CONCURRENT_THREADS,
+                time_diff,
                 status_code_dict,
             )
 
@@ -70,15 +75,20 @@ class ValidateManifest:
         params["data_type"] = "Biospecimen"
 
         dt_string, time_diff, status_code_dict = send_post_request(
-            params, base_url, CONCURRENT_THREADS, send_example_patient_manifest
+            base_url, params, CONCURRENT_THREADS, send_example_patient_manifest
         )
 
         record_run_time_result(
             "model/validate",
-            dt_string,
             f"Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.",
-            time_diff,
+            "HTAN data schema",
+            773,  # number of rows of the manifest being validated
+            params["data_type"],  # data type
+            None,  # output format not applicable
+            False,  # Restrict rules is set to False
+            dt_string,
             CONCURRENT_THREADS,
+            time_diff,
             status_code_dict,
         )
 

@@ -29,16 +29,16 @@ class ManifestStorageAPI:
         # TO DO: add csv
         params["return_type"] = "json"
         dt_string, time_diff, status_code_dict = send_request(
-            params, base_url, CONCURRENT_THREADS
+            base_url, params, CONCURRENT_THREADS
         )
 
         record_run_time_result(
-            "storage/assets/tables",
-            dt_string,
-            f"Retrieve asset view {asset_view} as a json",
-            time_diff,
-            CONCURRENT_THREADS,
-            status_code_dict,
+            endpoint_name="storage/assets/tables",
+            description=f"Retrieve asset view {asset_view} as a json",
+            dt_string=dt_string,
+            num_concurrent=CONCURRENT_THREADS,
+            latency=time_diff,
+            status_code_dict=status_code_dict,
         )
 
 
