@@ -112,7 +112,7 @@ class ManifestSubmit:
         params = self.params
         # update parameter.
         params["table_manipulation"] = "replace"
-        data_type_lst = ["Patient"]
+        data_type_lst = ["Patient", None]
         record_type_lst = ["table_and_file", "file_only"]
 
         description = "Submitting an example manifest as"
@@ -130,7 +130,7 @@ class ManifestSubmit:
         params["table_manipulation"] = "replace"
 
         # update parameter
-        data_type_lst = ["Dataflow"]
+        data_type_lst = ["DataFlow", None]
         record_type_lst = ["table_and_file", "file_only"]
         description = "Submitting a dataflow manifest for HTAN as"
 

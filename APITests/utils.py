@@ -232,7 +232,9 @@ def cal_time_api_call_post_request(
                 status_code = f.result().status_code
                 status_code_str = str(status_code)
                 if status_code_str != "200":
-                    logger.error(f"Error running: {url} using params {params}")
+                    logger.error(
+                        f"Encountered error {status_code_str} while running: {url} using params {params}"
+                    )
                 all_status_code[status_code_str] = all_status_code[status_code_str] + 1
             except InvalidSchema:
                 raise InvalidSchema(
