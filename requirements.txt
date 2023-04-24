@@ -8,12 +8,16 @@ futures==3.0.5
 identify==2.5.22
 idna==3.4
 importlib-metadata==6.1.0
+Jinja2==3.1.2
 keyring==23.4.1
+MarkupSafe==2.1.2
 nodeenv==1.7.0
 numpy==1.24.2
 pandas==1.5.3
+pdoc==13.1.1
 platformdirs==3.2.0
 pre-commit==3.2.1
+Pygments==2.15.1
 python-dateutil==2.8.2
 pytz==2023.2
 PyYAML==6.0
