@@ -26,8 +26,8 @@ jobs:
         run: pip3 install -r requirements.txt
 
       # create documentation
-      - run: pdoc --docformat google -o docs/api_test APITests/manifest-generator.py APITests/manifest-validate.py APITests/manifest-storage.py APITests/manifest-submit.py 
-
+      - run: pdoc --docformat google -o docs/api_test APITests/manifest-generator
+      
       - uses: actions/upload-pages-artifact@v1
         with:
           path: docs/api_test
