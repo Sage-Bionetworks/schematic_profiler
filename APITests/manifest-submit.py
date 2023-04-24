@@ -72,7 +72,7 @@ class ManifestSubmit:
                 params["manifest_record_type"] = record_type
 
                 dt_string, time_diff, status_code_dict = send_post_request(
-                    params, base_url, CONCURRENT_THREADS, manifest_to_send_func
+                    base_url, params, CONCURRENT_THREADS, manifest_to_send_func
                 )
 
                 if opt:
@@ -80,13 +80,28 @@ class ManifestSubmit:
                 else:
                     validate_setting = False
 
+                if "example" in description:
+                    data_schema = "example data schema"
+                    # TO DO: added way to automatically calculate the number of rows
+                    num_rows = 600
+                elif "dataflow" in description:
+                    data_schema = "Data flow schema"
+                    num_rows = 536
+                else:
+                    data_schema = None
+
                 record_run_time_result(
-                    "model/submit",
-                    dt_string,
-                    f"{description} {record_type} with validation set to {validate_setting}. The manifest has 600 rows.",
-                    time_diff,
-                    CONCURRENT_THREADS,
-                    status_code_dict,
+                    endpoint_name="model/submit",
+                    description=f"{description} {record_type} with validation set to {validate_setting}. The manifest has 600 rows.",
+                    data_schema=data_schema,
+                    num_rows=num_rows,  # number of rows of manifest being submitted
+                    data_type=params["data_type"],
+                    restrict_rules=False,  # restrict_rules # TO DO: add restrict_rules = True?
+                    dt_string=dt_string,
+                    manifest_record_type=params["manifest_record_type"],
+                    num_concurrent=CONCURRENT_THREADS,
+                    latency=time_diff,
+                    status_code_dict=status_code_dict,
                 )
                 time.sleep(2)
 
@@ -97,8 +112,8 @@ class ManifestSubmit:
         params = self.params
         # update parameter.
         params["table_manipulation"] = "replace"
-        data_type_lst = ["Patient"]
-        record_type_lst = ["table_and_file"]
+        data_type_lst = ["Patient", None]
+        record_type_lst = ["table_and_file", "file_only"]
 
         description = "Submitting an example manifest as"
         self.execute_manifest_submission(
@@ -115,8 +130,8 @@ class ManifestSubmit:
         params["table_manipulation"] = "replace"
 
         # update parameter
-        data_type_lst = ["Dataflow"]
-        record_type_lst = ["table_and_file"]
+        data_type_lst = ["DataFlow", None]
+        record_type_lst = ["table_and_file", "file_only"]
         description = "Submitting a dataflow manifest for HTAN as"
 
         self.execute_manifest_submission(
@@ -124,7 +139,7 @@ class ManifestSubmit:
             record_type_lst,
             params,
             description,
-            self.send_HTAN_dataflow_manifest(base_url, params),
+            self.send_HTAN_dataflow_manifest,
         )
 
 
