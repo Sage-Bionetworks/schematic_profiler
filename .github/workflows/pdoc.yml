@@ -26,8 +26,7 @@ jobs:
         run: pip3 install -r requirements.txt
 
       # create documentation
-      - run: poetry show pdoc
-      - run: poetry run pdoc --docformat google -o docs/api_test APITests
+      - run: pdoc --docformat google -o docs/api_test APITests/manifest-storage.py APITests/manifest-generator.py APITests/manifest-validate.py APITests/manifest-storage.py 
 
       - uses: actions/upload-pages-artifact@v1
         with:
