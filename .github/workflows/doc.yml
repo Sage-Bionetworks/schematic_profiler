@@ -27,11 +27,11 @@ jobs:
 
       # create documentation
       - name: Create documentation
-        run: mkdocs build --site-dir public
+        run: mkdocs build --site-dir docs/APITests
 
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: ./public
+          path: docs/APITests
 
   # Deploy the artifact to GitHub pages.
   # This is a separate job so that only actions/deploy-pages has the necessary permissions.
