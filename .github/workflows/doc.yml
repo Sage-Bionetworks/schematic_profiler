@@ -2,7 +2,7 @@ name: pdoc-doc
 
 on:
   push:
-    branches: ['develop', "develop-add-pdoc"] # for testing purpose, added "add-pdoc"
+    branches: ['develop']
   workflow_dispatch: # allow workflow to be manually triggered
 jobs:
   create-docs:
@@ -30,21 +30,3 @@ jobs:
         run: |
           git pull
           mkdocs gh-deploy
-
-      # - uses: actions/upload-pages-artifact@v1
-      #   with:
-      #     path: site
-
-  # Deploy the artifact to GitHub pages.
-  # This is a separate job so that only actions/deploy-pages has the necessary permissions.
-  # Deployment job
-  # deploy:
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
-  #   runs-on: ubuntu-latest
-  #   needs: create-docs
-  #   steps:
-  #     - name: Deploy to GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v2
