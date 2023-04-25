@@ -27,7 +27,9 @@ jobs:
 
       # create documentation
       - name: Create documentation
-        run: mkdocs gh-deploy
+        run: |
+          git pull
+          mkdocs gh-deploy
 
       # - uses: actions/upload-pages-artifact@v1
       #   with:
