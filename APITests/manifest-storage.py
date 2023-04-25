@@ -1,9 +1,9 @@
-from utils import (
+from APITests.utils import (
     get_input_token,
     record_run_time_result,
     send_request,
 )
-from utils import BASE_URL
+from APITests.utils import BASE_URL
 
 CONCURRENT_THREADS = 1
 
