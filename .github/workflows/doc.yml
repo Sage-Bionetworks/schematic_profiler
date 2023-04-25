@@ -25,24 +25,29 @@ jobs:
       - name: Install dependencies
         run: pip3 install -r requirements.txt
 
-      # create documentation
-      - name: Create documentation
-        run: mkdocs build --site-dir docs
+      - name: Deploy docs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-pages-artifact@v1
-        with:
-          path: docs
+      # create documentation
+      # - name: Create documentation
+      #   run: mkdocs build --site-dir site
+
+      # - uses: actions/upload-pages-artifact@v1
+      #   with:
+      #     path: site
 
   # Deploy the artifact to GitHub pages.
   # This is a separate job so that only actions/deploy-pages has the necessary permissions.
   # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: create-docs
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+  # deploy:
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   runs-on: ubuntu-latest
+  #   needs: create-docs
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v2
