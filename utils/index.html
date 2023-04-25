@@ -1125,7 +1125,7 @@
 
 
 <h2 id="APITests.utils.record_run_time_result" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">record_run_time_result</span><span class="p">(</span><span class="n">endpoint_name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">dt_string</span><span class="p">,</span> <span class="n">num_concurrent</span><span class="p">,</span> <span class="n">latency</span><span class="p">,</span> <span class="n">status_code_dict</span><span class="p">,</span> <span class="n">data_schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">restrict_rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">manifest_record_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">record_run_time_result</span><span class="p">(</span><span class="n">endpoint_name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">dt_string</span><span class="p">,</span> <span class="n">num_concurrent</span><span class="p">,</span> <span class="n">latency</span><span class="p">,</span> <span class="n">status_code_dict</span><span class="p">,</span> <span class="n">data_schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">restrict_rules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">manifest_record_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asset_view</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 </h2>
 
@@ -1265,6 +1265,16 @@
                 <code>None</code>
           </td>
         </tr>
+        <tr>
+          <td><code>asset</code></td>
+          <td>
+                <code>view (str</code>
+          </td>
+          <td><p>default to None. asset view of the asset store.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -1337,7 +1347,10 @@
 <span class="normal">338</span>
 <span class="normal">339</span>
 <span class="normal">340</span>
-<span class="normal">341</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">record_run_time_result</span><span class="p">(</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">record_run_time_result</span><span class="p">(</span>
     <span class="n">endpoint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">dt_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1350,6 +1363,7 @@
     <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">restrict_rules</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">manifest_record_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">asset_view</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Record the result of running an endpoint as a dataframe</span>
@@ -1366,6 +1380,7 @@
 <span class="sd">        output_format (str, optional): default to None. output format of a given manifest</span>
 <span class="sd">        restrict_rules (bool, optional): default to None. if restrict_rules parameter gets set to true</span>
 <span class="sd">        manifest_record_type (str, optional): default to None. Manifest storage type. Four options: file only, file+entities, table+file, table+file+entities</span>
+<span class="sd">        asset view (str, optional): default to None. asset view of the asset store.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># for debugging github action</span>
     <span class="n">return_time_now</span><span class="p">(</span><span class="s2">&quot;Record run time&quot;</span><span class="p">)</span>
@@ -1390,6 +1405,7 @@
             <span class="n">data_type</span><span class="p">,</span>
             <span class="n">output_format</span><span class="p">,</span>
             <span class="n">restrict_rules</span><span class="p">,</span>
+            <span class="n">asset_view</span><span class="p">,</span>
             <span class="n">dt_string</span><span class="p">,</span>
             <span class="n">manifest_record_type</span><span class="p">,</span>
             <span class="n">num_concurrent</span><span class="p">,</span>
