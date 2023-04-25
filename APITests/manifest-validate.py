@@ -1,19 +1,19 @@
 import requests
 from requests import Response
 import os
-from APITests.utils import (
+from utils import (
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
 )
-from APITests.utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 2
 
 base_url = f"{BASE_URL}/model/validate"
 
 
-class ValidateManifest:
+class ManifestValidate:
     def __init__(self, url: str):
         self.schema_url = url
 
@@ -98,8 +98,8 @@ class ValidateManifest:
         )
 
 
-vm_example_manifest = ValidateManifest(EXAMPLE_SCHEMA_URL)
+vm_example_manifest = ManifestValidate(EXAMPLE_SCHEMA_URL)
 vm_example_manifest.validate_example_data_manifest()
 
-vm_htan_manifest = ValidateManifest(HTAN_SCHEMA_URL)
+vm_htan_manifest = ManifestValidate(HTAN_SCHEMA_URL)
 vm_htan_manifest.validate_HTAN_data_manifest()

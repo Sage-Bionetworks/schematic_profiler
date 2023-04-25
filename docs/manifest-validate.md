@@ -1,2 +1,2 @@
-# ValidateManifest class
-::: APITests.manifest-validate.ValidateManifest
+# ManifestValidate class
+::: APITests.manifest-validate.ManifestValidate
