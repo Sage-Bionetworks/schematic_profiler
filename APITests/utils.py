@@ -284,6 +284,7 @@ def record_run_time_result(
     output_format: str = None,
     restrict_rules: bool = None,
     manifest_record_type: str = None,
+    asset_view: str = None,
 ) -> None:
     """
     Record the result of running an endpoint as a dataframe
@@ -300,6 +301,7 @@ def record_run_time_result(
         output_format (str, optional): default to None. output format of a given manifest
         restrict_rules (bool, optional): default to None. if restrict_rules parameter gets set to true
         manifest_record_type (str, optional): default to None. Manifest storage type. Four options: file only, file+entities, table+file, table+file+entities
+        asset view (str, optional): default to None. asset view of the asset store.
     """
     # for debugging github action
     return_time_now("Record run time")
@@ -324,6 +326,7 @@ def record_run_time_result(
             data_type,
             output_format,
             restrict_rules,
+            asset_view,
             dt_string,
             manifest_record_type,
             num_concurrent,
