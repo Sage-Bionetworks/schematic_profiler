@@ -1,20 +1,20 @@
-from APITests.utils import (
+from utils import (
     get_input_token,
     record_run_time_result,
     send_request,
 )
-from APITests.utils import BASE_URL
+from utils import BASE_URL
 
 CONCURRENT_THREADS = 1
 
 
-class ManifestStorageAPI:
+class ManifestStorage:
     def __init__(self):
         self.token = get_input_token()
         self.params = {"input_token": self.token}
 
 
-class RetrieveAssetView(ManifestStorageAPI):
+class RetrieveAssetView(ManifestStorage):
     def retrieve_asset_view_as_json(self):
         """
         Retrieve asset view table as a dataframe.
@@ -43,7 +43,7 @@ class RetrieveAssetView(ManifestStorageAPI):
         )
 
 
-class RestrieveProjectDataset(ManifestStorageAPI):
+class RestrieveProjectDataset(ManifestStorage):
     def retrieve_project_dataset_api_call(self, project_id: str, asset_view: str):
         """
         Make the API calls to retrieve all datasets from a given project

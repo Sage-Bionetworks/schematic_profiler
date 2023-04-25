@@ -3,13 +3,13 @@ import time
 import requests
 from typing import Callable, Tuple
 from requests import Response
-from APITests.utils import (
+from utils import (
     get_input_token,
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
 )
-from APITests.utils import DATA_FLOW_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from utils import DATA_FLOW_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/model/submit"

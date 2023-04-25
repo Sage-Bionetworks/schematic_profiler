@@ -1,11 +1,11 @@
-from APITests.utils import get_input_token, record_run_time_result, send_request
-from APITests.utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from utils import get_input_token, record_run_time_result, send_request
+from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/manifest/generate"
 
 
-class GenerateExampleManifest:
+class GenerateManifest:
     def __init__(self, url):
         self.schema_url = url
         self.use_annotation = False
@@ -113,10 +113,10 @@ class GenerateExampleManifest:
         )
 
 
-gm_example = GenerateExampleManifest(EXAMPLE_SCHEMA_URL)
+gm_example = GenerateManifest(EXAMPLE_SCHEMA_URL)
 gm_example.generate_new_manifest_example_model()
 gm_example.generate_new_manifest_example_model_excel("excel")
 gm_example.generate_existing_manifest_google_sheet()
 
-gm_htan = GenerateExampleManifest(HTAN_SCHEMA_URL)
+gm_htan = GenerateManifest(HTAN_SCHEMA_URL)
 gm_htan.generate_new_manifest_HTAN_google_sheet()
