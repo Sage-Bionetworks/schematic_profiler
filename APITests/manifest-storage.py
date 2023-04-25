@@ -36,6 +36,7 @@ class RetrieveAssetView(ManifestStorage):
         record_run_time_result(
             endpoint_name="storage/assets/tables",
             description=f"Retrieve asset view {asset_view} as a json",
+            asset_view=asset_view,
             dt_string=dt_string,
             num_concurrent=CONCURRENT_THREADS,
             latency=time_diff,
@@ -66,6 +67,7 @@ class RestrieveProjectDataset(ManifestStorage):
             endpoint_name="storage/project/datasets",
             description=f"Retrieve all datasets under project {project_id} in asset view {asset_view} as a json",
             dt_string=dt_string,
+            asset_view=asset_view,
             num_concurrent=CONCURRENT_THREADS,
             latency=time_diff,
             status_code_dict=status_code_dict,
