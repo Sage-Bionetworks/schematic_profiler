@@ -1,0 +1,16 @@
+site_name: API benchmarking tests
+
+plugins:
+  - mkdocstrings
+
+nav:
+  - API benchmark docs: index.md
+  - Code Reference:
+    - Test manifest generator: manifest-generator.md
+    - Test manifest storage: manifest-storage.md
+    - Test manifest submit: manifest-submit.md
+    - Test manifest validate: manifest-validate.md
+    - Utility functions: utils.md
+
+theme:
+  name: "material"

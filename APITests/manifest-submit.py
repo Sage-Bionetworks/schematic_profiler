@@ -1,19 +1,22 @@
+import os
 import time
 import requests
-from utils import (
+from typing import Callable, Tuple
+from requests import Response
+from APITests.utils import (
     get_input_token,
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
 )
-from utils import DATA_FLOW_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from APITests.utils import DATA_FLOW_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/model/submit"
 
 
 class ManifestSubmit:
-    def __init__(self, url):
+    def __init__(self, url: str):
         self.schema_url = url
         self.dataset_id = "syn51376664"
         self.token = get_input_token()
@@ -32,21 +35,21 @@ class ManifestSubmit:
         }
 
     @staticmethod
-    def send_HTAN_dataflow_manifest(url: str, params: dict):
+    def send_HTAN_dataflow_manifest(url: str, params: dict) -> Response:
         """
         sending an example dataflow manifest for HTAN
         Args:
             url: url of endpoint
             params: a dictionary of parameters specified by the users
         """
+        wd = os.getcwd()
+        test_manifest_path = os.path.join(
+            wd, "APITests/test_manifests/synapse_storage_manifest_dataflow.csv"
+        )
         return requests.post(
             url,
             params=params,
-            files={
-                "file_name": open(
-                    "test_manifests/synapse_storage_manifest_dataflow.csv", "rb"
-                )
-            },
+            files={"file_name": open(test_manifest_path, "rb")},
         )
 
     @staticmethod
@@ -55,16 +58,16 @@ class ManifestSubmit:
         record_type_lst: list,
         params: dict,
         description: str,
-        manifest_to_send_func,
+        manifest_to_send_func: Callable[[str, dict], Response],
     ):
         """
         Submitting a manifest with different parameters set by users and record latency
         Args:
-            data_type_lst: a list of data type
-            record_type_lst: a list of record s
-            params: a dictionary of parameters specified by the users
-            description: a short description of what the submission is. I.E. submitting XX manifest as
-            manifest_to_send_func: a function that sends a post request that upload a manifest to be sent
+            data_type_lst (list): a list of data type
+            record_type_lst (list): a list of record s
+            params (dict): a dictionary of parameters specified by the users
+            description (str): a short description of what the submission is. I.E. submitting XX manifest as
+            manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
         """
         for opt in data_type_lst:
             for record_type in record_type_lst:

@@ -1,10 +1,12 @@
 import requests
-from utils import (
+from requests import Response
+import os
+from APITests.utils import (
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
 )
-from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from APITests.utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 2
 
@@ -21,18 +23,21 @@ class ValidateManifest:
         }
 
     @staticmethod
-    def send_HTAN_biospecimen_manifest_to_validate(url: str, params: dict):
+    def send_HTAN_biospecimen_manifest_to_validate(url: str, params: dict) -> Response:
         """
         sending a HTAN biospecimen manifest to validate
+        Args:
+            url (str): schematic validation endpoint
+            params (dict): a dictionary of parameters defined in schematic used by validation
         """
+        wd = os.getcwd()
+        test_manifest_path = os.path.join(
+            wd, "APITests/test_manifests/synapse_storage_manifest_patient.csv"
+        )
         return requests.post(
             url,
             params=params,
-            files={
-                "file_name": open(
-                    "test_manifests/synapse_storage_manifest_HTAN_HMS.csv", "rb"
-                )
-            },
+            files={"file_name": open(test_manifest_path, "rb")},
         )
 
     def validate_example_data_manifest(self):

@@ -2,11 +2,13 @@ import os
 import time
 import pytz
 import logging
+from typing import Callable, Tuple
 from datetime import datetime
 import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
 import requests
 from requests.exceptions import InvalidSchema
+from requests import Response
 import pandas as pd
 import synapseclient
 from synapseclient import Table
@@ -30,45 +32,59 @@ DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_
 BASE_URL = "https://schematic-dev.api.sagebionetworks.org/v1"
 
 
-def fetch(url: str, params: dict):
+def fetch(url: str, params: dict) -> Response:
     """
     Trigger a get request
     Args:
-        url: the url to run a given api request
-        params: parameter of running a given api request
+        url (str): the url to run a given api request
+        params (dict): parameter of running a given api request
+    Returns:
+        Response: a response object
     """
     return requests.get(url, params=params)
 
 
-def send_example_patient_manifest(url: str, params: dict):
+def send_example_patient_manifest(url: str, params: dict) -> Response:
     """
     sending an example patient manifest
+    Args:
+         url (str): the url to run a given api request
+         params (dict): parameters of running the post request
+    Returns:
+        Response: a response object
     """
+    wd = os.getcwd()
+    test_manifest_path = os.path.join(
+        wd, "APITests/test_manifests/synapse_storage_manifest_patient.csv"
+    )
+
     return requests.post(
         url,
         params=params,
-        files={
-            "file_name": open(
-                "test_manifests/synapse_storage_manifest_patient.csv", "rb"
-            )
-        },
+        files={"file_name": open(test_manifest_path, "rb")},
     )
 
 
 def send_post_request(
-    base_url: str, params: dict, concurrent_threads: int, manifest_to_send_func
-):
+    base_url: str,
+    params: dict,
+    concurrent_threads: int,
+    manifest_to_send_func: Callable[[str, dict], Response],
+) -> Tuple[str, float, dict]:
     """
     sending post requests
     Args:
-        params: a dictionary of parameters to send
-        base_url: url of endpoint
-        concurrent_threads: number of concurrent threads
-        manifest_to_send_func: a function that sends a post request that upload a manifest to be sent
-    Return:
-        dt_string: start time of running the API endpoints.
-        time_diff: time of finish running all requests.
-        all_status_code: dict; a dictionary that records the status code of run.
+        params (dict): a dictionary of parameters to send
+        base_url (str): url of endpoint
+        concurrent_threads (int): number of concurrent threads
+        manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
+
+    Returns:
+        dt_string (str): start time of running the API endpoints.
+        time_diff (float): time of finish running all requests.
+        all_status_code (dict): dict; a dictionary that records the status code of run.
+    Todo:
+        specify exception
     """
     try:
         # send request and calculate run time
@@ -83,17 +99,19 @@ def send_post_request(
     return dt_string, time_diff, status_code_dict
 
 
-def send_request(base_url: str, params: dict, concurrent_threads: int):
+def send_request(
+    base_url: str, params: dict, concurrent_threads: int
+) -> Tuple[str, float, dict]:
     """
     sending requests to manifest/generate endpoint
     Args:
-        params: a dictionary of parameters to send
-        base_url: url of endpoint
-        concurrent_threads: number of concurrent threads
-    Return:
-        dt_string: start time of running the API endpoints.
-        time_diff: time of finish running all requests.
-        all_status_code: dict; a dictionary that records the status code of run.
+        params (dict): a dictionary of parameters to send
+        base_url (str): url of endpoint
+        concurrent_threads (int): number of concurrent threads
+    Returns:
+        dt_string (str): start time of running the API endpoints.
+        time_diff (float): time of finish running all requests.
+        all_status_code (dict): dict; a dictionary that records the status code of run.
     """
     try:
         # send request and calculate run time
@@ -108,12 +126,13 @@ def send_request(base_url: str, params: dict, concurrent_threads: int):
     return dt_string, time_diff, status_code_dict
 
 
-def return_time_now(name_funct_call=None) -> str:
+def return_time_now(name_funct_call: Callable = None) -> str:
     """
     Get the time now
     Args:
-        name_funct_call: name of function call
-    return: current time formatted as "%d/%m/%Y %H:%M:%S" as a string
+        name_funct_call (Callable): name of function call (for logging purposes)
+    Returns:
+        current time formatted as "%d/%m/%Y %H:%M:%S" as a string
     """
     now = datetime.now(pytz.timezone("US/Eastern"))
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -127,9 +146,9 @@ def return_time_now(name_funct_call=None) -> str:
 
 
 def get_input_token() -> str:
-    """
-    Get access token to use asset store resources
-    return: a token to access asset store
+    """Get access token to use asset store resources
+    Returns:
+        str: a token to access asset store
     """
     # for running on github action
     if "SYNAPSE_AUTH_TOKEN" in os.environ:
@@ -143,10 +162,11 @@ def get_input_token() -> str:
     return token
 
 
-def login_synapse():
+def login_synapse() -> synapseclient.Synapse:
     """
     Login to synapse using the token provided
-    return: synapse object
+    Returns:
+        synapse object
     """
     token = get_input_token()
     try:
@@ -162,17 +182,19 @@ def login_synapse():
     return syn
 
 
-def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
+def cal_time_api_call(
+    url: str, params: dict, concurrent_threads: int
+) -> Tuple[str, float, dict]:
     """
-    calculate the latency of api calls.
+    calculate the latency of api calls by sending get requests.
     Args:
-        url: str; the url that users want to access
-        params: dict; the parameters need to use for the request
-        concurrent_thread: integer; number of concurrent threads requested by users
-    return:
-        dt_string: start time of running the API endpoints.
-        time_diff: time of finish running all requests.
-        all_status_code: dict; a dictionary that records the status code of run.
+        url (str): the url that users want to access
+        params (dict): the parameters need to use for the request
+        concurrent_threads (int): number of concurrent threads requested by users
+    Returns:
+        dt_string (str): start time of running the API endpoints.
+        time_diff (float): time of finish running all requests.
+        all_status_code (dict): dict; a dictionary that records the status code of run.
     """
     start_time = time.time()
     # get time of running the api endpoint
@@ -202,19 +224,22 @@ def cal_time_api_call(url: str, params: dict, concurrent_threads: int):
 
 
 def cal_time_api_call_post_request(
-    url: str, params: dict, concurrent_threads: int, manifest_to_send_func
-):
+    url: str,
+    params: dict,
+    concurrent_threads: int,
+    manifest_to_send_func: Callable[[str, dict], Response],
+) -> Tuple[str, float, dict]:
     """
-    calculate the latency of api calls.
+    calculate the latency of api calls by sending post.
     Args:
-        url: str; the url that users want to access
-        params: dict; the parameters need to use for the request
-        concurrent_threads: integer; number of concurrent threads requested by users
-        manifest_to_send_func: a function that sends a post request that upload a manifest to be sent
-    return:
-        dt_string: start time of running the API endpoints.
-        time_diff: time of finish running all requests.
-        all_status_code: dict; a dictionary that records the status code of run.
+        url (str): the url that users want to access
+        params (dict): the parameters need to use for the request
+        concurrent_threads (int): number of concurrent threads requested by users
+        manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
+    Returns:
+        dt_string (str): start time of running the API endpoints.
+        time_diff (float): time of finish running all requests.
+        all_status_code (dict): dict; a dictionary that records the status code of run.
     """
     start_time = time.time()
     # get time of running the api endpoint
@@ -259,28 +284,22 @@ def record_run_time_result(
     output_format: str = None,
     restrict_rules: bool = None,
     manifest_record_type: str = None,
-):
+) -> None:
     """
     Record the result of running an endpoint as a dataframe
     Args:
-    Required params:
-    endpoint_name: str; name of the endpoint being run
-    description: str; more details description of the case being run
-    num_concurrent: integer; number of concurrent requests
-    latency: double; latency of finishing the run
-    status_code_dict: dictionary; dictionary of status code
-
-    Optional params:
-    data_schema: str; the data schema used by the function
-    num_rows: int; number of rows of a given manifest
-    data_type: str; data type/component being used
-    output_format: str; output format of a given manifest
-    restrict_rules: bool; if restrict_rules parameter gets set to true
-    dt_string: str; start time of the test
-    manifest_record_type: Manifest storage type. Four options: file only, file+entities, table+file, table+file+entities
-
-    return:
-    a dataframe that record results of the run time
+        endpoint_name (str): name of the endpoint being run
+        description (str): more details description of the case being run
+        num_concurrent (int): number of concurrent requests
+        latency (float): latency of finishing the run
+        status_code_dict (dict): dictionary of status code
+        dt_string (str): start time of the test
+        data_schema (str, optional): default to None. the data schema used by the function
+        num_rows (int, optional): default to None. number of rows of a given manifest
+        data_type (str, optional): default to None. data type/component being used
+        output_format (str, optional): default to None. output format of a given manifest
+        restrict_rules (bool, optional): default to None. if restrict_rules parameter gets set to true
+        manifest_record_type (str, optional): default to None. Manifest storage type. Four options: file only, file+entities, table+file, table+file+entities
     """
     # for debugging github action
     return_time_now("Record run time")

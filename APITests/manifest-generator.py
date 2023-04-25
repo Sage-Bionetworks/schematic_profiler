@@ -1,5 +1,5 @@
-from utils import get_input_token, record_run_time_result, send_request
-from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from APITests.utils import get_input_token, record_run_time_result, send_request
+from APITests.utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/manifest/generate"
@@ -42,7 +42,7 @@ class GenerateExampleManifest:
             status_code_dict=status_code_dict,
         )
 
-    def generate_new_manifest_example_model_excel(self, output_format):
+    def generate_new_manifest_example_model_excel(self, output_format: str):
         """
         Generate a new manifest as an excel spreadsheet by using the example data model
         Args:
