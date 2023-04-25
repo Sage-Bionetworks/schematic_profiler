@@ -243,8 +243,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#APITests.manifest-storage.ManifestStorageAPI" class="md-nav__link">
-    APITests.manifest-storage.ManifestStorageAPI
+  <a href="#APITests.manifest-storage.ManifestStorage" class="md-nav__link">
+    APITests.manifest-storage.ManifestStorage
   </a>
   
 </li>
@@ -375,8 +375,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#APITests.manifest-storage.ManifestStorageAPI" class="md-nav__link">
-    APITests.manifest-storage.ManifestStorageAPI
+  <a href="#APITests.manifest-storage.ManifestStorage" class="md-nav__link">
+    APITests.manifest-storage.ManifestStorage
   </a>
   
 </li>
@@ -444,7 +444,7 @@
 <div class="doc doc-object doc-class">
 
 
-<a id="APITests.manifest-storage.ManifestStorageAPI"></a>
+<a id="APITests.manifest-storage.ManifestStorage"></a>
   <div class="doc doc-contents first">
 
 
@@ -454,7 +454,7 @@
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ManifestStorageAPI</span><span class="p">:</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ManifestStorage</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">get_input_token</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;input_token&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">}</span>
@@ -487,7 +487,7 @@
 <a id="APITests.manifest-storage.RetrieveAssetView"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="APITests.manifest-storage.ManifestStorageAPI" href="#APITests.manifest-storage.ManifestStorageAPI">ManifestStorageAPI</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="APITests.manifest-storage.ManifestStorage" href="#APITests.manifest-storage.ManifestStorage">ManifestStorage</a></code></p>
 
 
 
@@ -519,7 +519,7 @@
 <span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RetrieveAssetView</span><span class="p">(</span><span class="n">ManifestStorageAPI</span><span class="p">):</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RetrieveAssetView</span><span class="p">(</span><span class="n">ManifestStorage</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">retrieve_asset_view_as_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve asset view table as a dataframe.</span>
@@ -648,7 +648,7 @@
 <a id="APITests.manifest-storage.RestrieveProjectDataset"></a>
   <div class="doc doc-contents first">
       <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="APITests.manifest-storage.ManifestStorageAPI" href="#APITests.manifest-storage.ManifestStorageAPI">ManifestStorageAPI</a></code></p>
+        Bases: <code><a class="autorefs autorefs-internal" title="APITests.manifest-storage.ManifestStorage" href="#APITests.manifest-storage.ManifestStorage">ManifestStorage</a></code></p>
 
 
 
@@ -700,7 +700,7 @@
 <span class="normal">89</span>
 <span class="normal">90</span>
 <span class="normal">91</span>
-<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RestrieveProjectDataset</span><span class="p">(</span><span class="n">ManifestStorageAPI</span><span class="p">):</span>
+<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RestrieveProjectDataset</span><span class="p">(</span><span class="n">ManifestStorage</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">retrieve_project_dataset_api_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">asset_view</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make the API calls to retrieve all datasets from a given project</span>
