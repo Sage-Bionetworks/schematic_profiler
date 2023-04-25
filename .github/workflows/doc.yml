@@ -27,7 +27,7 @@ jobs:
 
       # create documentation
       - name: Create documentation
-        run: mkdocs build .
+        run: mkdocs build
 
       - uses: actions/upload-pages-artifact@v1
         with:
