@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import requests
 from requests import Response
 import os
@@ -13,13 +14,13 @@ CONCURRENT_THREADS = 2
 base_url = f"{BASE_URL}/model/validate"
 
 
+@dataclass
 class ManifestValidate:
-    def __init__(self, url: str):
-        self.schema_url = url
+    url: str
 
-        # organize parameter for generating an example manifeset
-        self.params = {
-            "schema_url": self.schema_url,
+    def __post_init__(self):
+        self.params: dict = {
+            "schema_url": self.url,
         }
 
     @staticmethod
@@ -29,6 +30,9 @@ class ManifestValidate:
         Args:
             url (str): schematic validation endpoint
             params (dict): a dictionary of parameters defined in schematic used by validation
+
+        Returns:
+            a response object
         """
         wd = os.getcwd()
         test_manifest_path = os.path.join(
@@ -58,17 +62,16 @@ class ManifestValidate:
             )
 
             record_run_time_result(
-                "model/validate",
-                f"Validate an example data model using the patient component with restrict_rules set to {opt}. The manifest has 600 rows.",
-                "example data schema",
-                600,  # number of rows of the manifest being validated
-                params["data_type"],  # data type
-                None,  # output format not applicable
-                opt,  # Restrict rules is based on the option above,
-                dt_string,
-                CONCURRENT_THREADS,
-                time_diff,
-                status_code_dict,
+                endpoint_name="model/validate",
+                description=f"Validate an example data model using the patient component with restrict_rules set to {opt}. The manifest has 600 rows.",
+                data_schema="example data schema",
+                num_rows=600,  # number of rows of the manifest being validated
+                data_type=params["data_type"],
+                restrict_rules=opt,
+                dt_string=dt_string,
+                num_concurrent=CONCURRENT_THREADS,
+                latency=time_diff,
+                status_code_dict=status_code_dict,
             )
 
     def validate_HTAN_data_manifest(self):
@@ -84,17 +87,16 @@ class ManifestValidate:
         )
 
         record_run_time_result(
-            "model/validate",
-            f"Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.",
-            "HTAN data schema",
-            773,  # number of rows of the manifest being validated
-            params["data_type"],  # data type
-            None,  # output format not applicable
-            False,  # Restrict rules is set to False
-            dt_string,
-            CONCURRENT_THREADS,
-            time_diff,
-            status_code_dict,
+            endpoint_name="model/validate",
+            description=f"Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.",
+            data_schema="HTAN data schema",
+            num_rows=773,  # number of rows of the manifest being validated
+            data_type=params["data_type"],  # data type
+            restrict_rules=False,  # Restrict rules is set to False
+            dt_string=dt_string,
+            num_concurrent=CONCURRENT_THREADS,
+            latency=time_diff,
+            status_code_dict=status_code_dict,
         )
 
 
