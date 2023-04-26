@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from utils import (
     get_input_token,
     record_run_time_result,
@@ -8,10 +9,14 @@ from utils import BASE_URL
 CONCURRENT_THREADS = 1
 
 
+@dataclass
 class ManifestStorage:
-    def __init__(self):
-        self.token = get_input_token()
-        self.params = {"input_token": self.token}
+    token: str = get_input_token()
+
+    def __post_init__(self):
+        self.params: dict = {
+            "input_token": self.token,
+        }
 
 
 class RetrieveAssetView(ManifestStorage):

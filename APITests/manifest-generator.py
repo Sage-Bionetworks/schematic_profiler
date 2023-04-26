@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from utils import get_input_token, record_run_time_result, send_request
 from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
@@ -5,20 +6,20 @@ CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/manifest/generate"
 
 
+@dataclass
 class GenerateManifest:
-    def __init__(self, url):
-        self.schema_url = url
-        self.use_annotation = False
-        self.token = get_input_token()
-        self.title = "example"
-        self.data_type = "Patient"  # TO DO: add other data types
+    url: str
+    use_annotation: bool = False
+    token: str = get_input_token()
+    title: str = "example"
+    data_type: str = "Patient"
 
-        # organize parameter for generating an example manifeset
-        self.params = {
-            "schema_url": self.schema_url,
+    def __post_init__(self):
+        self.params: dict = {
+            "schema_url": self.url,
             "title": self.title,
             "data_type": self.data_type,
-            "use_annotations": False,
+            "use_annotations": self.use_annotation,
             "input_token": self.token,
         }
 
