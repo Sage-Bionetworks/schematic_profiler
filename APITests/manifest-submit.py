@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 import time
 import requests
 from typing import Callable, Tuple
@@ -9,24 +10,24 @@ from utils import (
     send_example_patient_manifest,
     send_post_request,
 )
-from utils import DATA_FLOW_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+from utils import EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/model/submit"
 
 
+@dataclass
 class ManifestSubmit:
-    def __init__(self, url: str):
-        self.schema_url = url
-        self.dataset_id = "syn51376664"
-        self.token = get_input_token()
-        self.asset_view = "syn51376649"
-        self.restrict_rules = False  # TO DO: consider restrict_rules = True?
-        self.use_schema_label = True
+    url: str
+    dataset_id: str = "syn51376664"
+    token: str = get_input_token()
+    asset_view: str = "syn51376649"
+    restrict_rules: bool = False
+    use_schema_label: bool = True
 
-        # organize parameters for submitting a manifest
+    def __post_init__(self):
         self.params = {
-            "schema_url": self.schema_url,
+            "schema_url": self.url,
             "dataset_id": self.dataset_id,
             "asset_view": self.asset_view,
             "restrict_rules": self.restrict_rules,
