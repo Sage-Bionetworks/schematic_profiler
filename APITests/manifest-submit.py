@@ -10,7 +10,7 @@ from utils import (
     send_example_patient_manifest,
     send_post_request,
 )
-from utils import EXAMPLE_SCHEMA_URL, BASE_URL
+from utils import EXAMPLE_SCHEMA_URL, BASE_URL, DATA_FLOW_SCHEMA_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/model/submit"
