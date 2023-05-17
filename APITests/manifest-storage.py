@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from utils import (
-    get_input_token,
+    get_access_token,
     record_run_time_result,
     send_request,
 )
@@ -11,11 +11,11 @@ CONCURRENT_THREADS = 1
 
 @dataclass
 class ManifestStorage:
-    token: str = get_input_token()
+    token: str = get_access_token()
 
     def __post_init__(self):
         self.params: dict = {
-            "input_token": self.token,
+            "access_token": self.token,
         }
 
 

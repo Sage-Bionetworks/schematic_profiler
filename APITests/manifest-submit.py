@@ -5,7 +5,7 @@ import requests
 from typing import Callable, Tuple
 from requests import Response
 from utils import (
-    get_input_token,
+    get_access_token,
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
@@ -20,7 +20,7 @@ base_url = f"{BASE_URL}/model/submit"
 class ManifestSubmit:
     url: str
     dataset_id: str = "syn51376664"
-    token: str = get_input_token()
+    token: str = get_access_token()
     asset_view: str = "syn51376649"
     restrict_rules: bool = False
     use_schema_label: bool = True
@@ -32,7 +32,7 @@ class ManifestSubmit:
             "asset_view": self.asset_view,
             "restrict_rules": self.restrict_rules,
             "use_schema_label": self.use_schema_label,
-            "input_token": self.token,
+            "access_token": self.token,
         }
 
     @staticmethod

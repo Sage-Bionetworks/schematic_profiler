@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from utils import get_input_token, record_run_time_result, send_request
+from utils import get_access_token, record_run_time_result, send_request
 from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
@@ -10,7 +10,7 @@ base_url = f"{BASE_URL}/manifest/generate"
 class GenerateManifest:
     url: str
     use_annotation: bool = False
-    token: str = get_input_token()
+    token: str = get_access_token()
     title: str = "example"
     data_type: str = "Patient"
 
@@ -20,7 +20,7 @@ class GenerateManifest:
             "title": self.title,
             "data_type": self.data_type,
             "use_annotations": self.use_annotation,
-            "input_token": self.token,
+            "access_token": self.token,
         }
 
     def generate_new_manifest_example_model(self):

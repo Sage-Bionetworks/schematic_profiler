@@ -145,7 +145,7 @@ def return_time_now(name_funct_call: Callable = None) -> str:
     return dt_string
 
 
-def get_input_token() -> str:
+def get_access_token() -> str:
     """Get access token to use asset store resources
     Returns:
         str: a token to access asset store
@@ -168,7 +168,7 @@ def login_synapse() -> synapseclient.Synapse:
     Returns:
         synapse object
     """
-    token = get_input_token()
+    token = get_access_token()
     try:
         syn = synapseclient.Synapse()
 
