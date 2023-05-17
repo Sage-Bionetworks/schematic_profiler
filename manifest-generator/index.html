@@ -532,7 +532,7 @@
 <span class="k">class</span> <span class="nc">GenerateManifest</span><span class="p">:</span>
     <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">use_annotation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_input_token</span><span class="p">()</span>
+    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_access_token</span><span class="p">()</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;example&quot;</span>
     <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Patient&quot;</span>
 
@@ -542,7 +542,7 @@
             <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
             <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span>
             <span class="s2">&quot;use_annotations&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_annotation</span><span class="p">,</span>
-            <span class="s2">&quot;input_token&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">,</span>
+            <span class="s2">&quot;access_token&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">generate_new_manifest_example_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

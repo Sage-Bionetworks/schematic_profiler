@@ -311,8 +311,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#APITests.utils.get_input_token" class="md-nav__link">
-    get_input_token()
+  <a href="#APITests.utils.get_access_token" class="md-nav__link">
+    get_access_token()
   </a>
   
 </li>
@@ -429,8 +429,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#APITests.utils.get_input_token" class="md-nav__link">
-    get_input_token()
+  <a href="#APITests.utils.get_access_token" class="md-nav__link">
+    get_access_token()
   </a>
   
 </li>
@@ -980,8 +980,8 @@
 
 
 
-<h2 id="APITests.utils.get_input_token" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_input_token</span><span class="p">()</span></code>
+<h2 id="APITests.utils.get_access_token" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_access_token</span><span class="p">()</span></code>
 
 </h2>
 
@@ -1024,7 +1024,7 @@
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span>
-<span class="normal">162</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_input_token</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">162</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_access_token</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get access token to use asset store resources</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        str: a token to access asset store</span>
@@ -1102,7 +1102,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        synapse object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="n">get_input_token</span><span class="p">()</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">get_access_token</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">syn</span> <span class="o">=</span> <span class="n">synapseclient</span><span class="o">.</span><span class="n">Synapse</span><span class="p">()</span>
 

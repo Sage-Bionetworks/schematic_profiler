@@ -541,7 +541,7 @@
 <span class="k">class</span> <span class="nc">ManifestSubmit</span><span class="p">:</span>
     <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;syn51376664&quot;</span>
-    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_input_token</span><span class="p">()</span>
+    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_access_token</span><span class="p">()</span>
     <span class="n">asset_view</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;syn51376649&quot;</span>
     <span class="n">restrict_rules</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">use_schema_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
@@ -553,7 +553,7 @@
             <span class="s2">&quot;asset_view&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_view</span><span class="p">,</span>
             <span class="s2">&quot;restrict_rules&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restrict_rules</span><span class="p">,</span>
             <span class="s2">&quot;use_schema_label&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_schema_label</span><span class="p">,</span>
-            <span class="s2">&quot;input_token&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">,</span>
+            <span class="s2">&quot;access_token&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
