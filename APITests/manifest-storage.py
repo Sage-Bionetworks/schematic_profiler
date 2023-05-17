@@ -99,9 +99,54 @@ class RestrieveProjectDataset(ManifestStorage):
         self.retrieve_project_dataset_api_call(project_id, asset_view)
 
 
+class RestrieveStorageProjectManifest(ManifestStorage):
+    def retrieve_storage_project_manifests_api_call(
+        self, project_id: str, asset_view: str
+    ):
+        """Retrieve all manifests and component in a given project
+
+        Args:
+            project_id (str): ID of a storage project.
+            asset_view (str): ID of view listing all project data assets.
+        """
+        base_url = f"{BASE_URL}/storage/project/manifests"
+        params = self.params
+
+        # update parameter
+        params["asset_view"] = asset_view
+        params["project_id"] = project_id
+
+        dt_string, time_diff, status_code_dict = send_request(
+            base_url, params, CONCURRENT_THREADS
+        )
+
+        record_run_time_result(
+            endpoint_name="storage/project/manifests",
+            description=f"Retrieve all manifests and components of manifests under project {project_id} in asset view {asset_view} as a json",
+            dt_string=dt_string,
+            asset_view=asset_view,
+            num_concurrent=CONCURRENT_THREADS,
+            latency=time_diff,
+            status_code_dict=status_code_dict,
+        )
+
+    def retrieve_project_manifests_iatlas(self):
+        """
+        Retrieve all manifests under a given iatlas project
+        """
+        # define the asset view to retrieve
+        asset_view = "syn50864462"  # iatlas asset view
+        project_id = "syn50864445"  # iatlas manifest store
+
+        self.retrieve_storage_project_manifests_api_call(project_id, asset_view)
+
+
 retrieve_asset_view_class = RetrieveAssetView()
 retrieve_asset_view_class.retrieve_asset_view_as_json()
 
 retrieve_project_dataset = RestrieveProjectDataset()
 retrieve_project_dataset.retrieve_project_datasets_test()
 retrieve_project_dataset.retrieve_project_datasets_HTAN()
+
+retrieve_project_manifest = RestrieveStorageProjectManifest()
+retrieve_project_manifest.retrieve_project_manifests_iatlas()
