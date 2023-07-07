@@ -36,7 +36,7 @@ class ManifestValidate:
         """
         wd = os.getcwd()
         test_manifest_path = os.path.join(
-            wd, "APITests/test_manifests/synapse_storage_manifest_patient.csv"
+            wd, "APITests/test_manifests/synapse_storage_manifest_HTAN_HMS.csv"
         )
         return requests.post(
             url,

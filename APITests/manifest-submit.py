@@ -10,7 +10,7 @@ from utils import (
     send_example_patient_manifest,
     send_post_request,
 )
-from utils import EXAMPLE_SCHEMA_URL, BASE_URL
+from utils import EXAMPLE_SCHEMA_URL, DATA_FLOW_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/model/submit"
@@ -45,7 +45,7 @@ class ManifestSubmit:
         """
         wd = os.getcwd()
         test_manifest_path = os.path.join(
-            wd, "APITests/test_manifests/synapse_storage_manifest_dataflow.csv"
+            wd, "test_manifests/synapse_storage_manifest_dataflow.csv"
         )
         return requests.post(
             url,
