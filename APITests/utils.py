@@ -28,7 +28,7 @@ HTAN_SCHEMA_URL = (
     "https://raw.githubusercontent.com/ncihtan/data-models/main/HTAN.model.jsonld"
 )
 
-DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_flow_component.jsonld"
+DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_model/dataflow_component.jsonld"
 BASE_URL = "https://schematic-dev.api.sagebionetworks.org/v1"
 
 
@@ -55,7 +55,7 @@ def send_example_patient_manifest(url: str, params: dict) -> Response:
     """
     wd = os.getcwd()
     test_manifest_path = os.path.join(
-        wd, "APITests/test_manifests/synapse_storage_manifest_patient.csv"
+        wd, "test_manifests/synapse_storage_manifest_patient.csv"
     )
 
     return requests.post(
