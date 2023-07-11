@@ -1,0 +1,4 @@
+[tool.ruff]
+# Allow lines to be as long as 1000 characters.
+# Basically ignore line length
+line-length = 1000
