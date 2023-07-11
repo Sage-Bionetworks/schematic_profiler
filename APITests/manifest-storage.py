@@ -1,10 +1,6 @@
 from dataclasses import dataclass
-from utils import (
-    get_access_token,
-    record_run_time_result,
-    send_request,
-)
-from utils import BASE_URL
+
+from utils import BASE_URL, get_access_token, record_run_time_result, send_request
 
 CONCURRENT_THREADS = 1
 

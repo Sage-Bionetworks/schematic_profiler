@@ -1,16 +1,20 @@
 import os
-from dataclasses import dataclass
 import time
+from dataclasses import dataclass
+from typing import Callable
+
 import requests
-from typing import Callable, Tuple
 from requests import Response
+
 from utils import (
+    BASE_URL,
+    DATA_FLOW_SCHEMA_URL,
+    EXAMPLE_SCHEMA_URL,
     get_access_token,
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
 )
-from utils import EXAMPLE_SCHEMA_URL, DATA_FLOW_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/model/submit"
