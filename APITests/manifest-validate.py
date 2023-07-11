@@ -1,13 +1,18 @@
+import os
 from dataclasses import dataclass
+
 import requests
 from requests import Response
-import os
+
+# import from internal package
 from utils import (
+    BASE_URL,
+    EXAMPLE_SCHEMA_URL,
+    HTAN_SCHEMA_URL,
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
 )
-from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
 
 CONCURRENT_THREADS = 2
 
@@ -88,7 +93,7 @@ class ManifestValidate:
 
         record_run_time_result(
             endpoint_name="model/validate",
-            description=f"Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.",
+            description="Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.",
             data_schema="HTAN data schema",
             num_rows=773,  # number of rows of the manifest being validated
             data_type=params["data_type"],  # data type

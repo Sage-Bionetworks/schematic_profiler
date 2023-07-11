@@ -1,6 +1,13 @@
 from dataclasses import dataclass
-from utils import get_access_token, record_run_time_result, send_request
-from utils import HTAN_SCHEMA_URL, EXAMPLE_SCHEMA_URL, BASE_URL
+
+from utils import (
+    BASE_URL,
+    EXAMPLE_SCHEMA_URL,
+    HTAN_SCHEMA_URL,
+    get_access_token,
+    record_run_time_result,
+    send_request,
+)
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/manifest/generate"

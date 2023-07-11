@@ -1,16 +1,16 @@
+import concurrent.futures
+import logging
 import os
 import time
-import pytz
-import logging
-from typing import Callable, Tuple
-from datetime import datetime
-import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+from typing import Callable, Tuple
+
+import pytz
 import requests
-from requests.exceptions import InvalidSchema
-from requests import Response
-import pandas as pd
 import synapseclient
+from requests import Response
+from requests.exceptions import InvalidSchema
 from synapseclient import Table
 
 logging.basicConfig(
@@ -168,7 +168,7 @@ def login_synapse() -> synapseclient.Synapse:
     Returns:
         synapse object
     """
-    token = get_access_token()
+    get_access_token()
     try:
         syn = synapseclient.Synapse()
 
@@ -339,6 +339,6 @@ def record_run_time_result(
     ]
 
     # add new row to table
-    table = syn.store(Table(existing_table_schema, new_row))
+    syn.store(Table(existing_table_schema, new_row))
 
     logger.info("Finish uploading result to synapse. ")
