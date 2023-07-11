@@ -1102,7 +1102,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        synapse object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="n">get_access_token</span><span class="p">()</span>
+    <span class="n">get_access_token</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">syn</span> <span class="o">=</span> <span class="n">synapseclient</span><span class="o">.</span><span class="n">Synapse</span><span class="p">()</span>
 
@@ -1418,7 +1418,7 @@
     <span class="p">]</span>
 
     <span class="c1"># add new row to table</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">syn</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">Table</span><span class="p">(</span><span class="n">existing_table_schema</span><span class="p">,</span> <span class="n">new_row</span><span class="p">))</span>
+    <span class="n">syn</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">Table</span><span class="p">(</span><span class="n">existing_table_schema</span><span class="p">,</span> <span class="n">new_row</span><span class="p">))</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finish uploading result to synapse. &quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>

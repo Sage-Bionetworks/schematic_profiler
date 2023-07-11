@@ -409,12 +409,7 @@
 
         <details class="quote">
           <summary>Source code in <code>APITests/manifest-validate.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 17</span>
-<span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
 <span class="normal"> 25</span>
@@ -492,7 +487,12 @@
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
-<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ManifestValidate</span><span class="p">:</span>
     <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
 
@@ -566,7 +566,7 @@
 
         <span class="n">record_run_time_result</span><span class="p">(</span>
             <span class="n">endpoint_name</span><span class="o">=</span><span class="s2">&quot;model/validate&quot;</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.&quot;</span><span class="p">,</span>
             <span class="n">data_schema</span><span class="o">=</span><span class="s2">&quot;HTAN data schema&quot;</span><span class="p">,</span>
             <span class="n">num_rows</span><span class="o">=</span><span class="mi">773</span><span class="p">,</span>  <span class="c1"># number of rows of the manifest being validated</span>
             <span class="n">data_type</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;data_type&quot;</span><span class="p">],</span>  <span class="c1"># data type</span>
@@ -663,12 +663,7 @@
 
       <details class="quote">
         <summary>Source code in <code>APITests/manifest-validate.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
@@ -682,7 +677,12 @@
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
-<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">send_HTAN_biospecimen_manifest_to_validate</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    sending a HTAN biospecimen manifest to validate</span>
@@ -724,12 +724,7 @@
 
       <details class="quote">
         <summary>Source code in <code>APITests/manifest-validate.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 82</span>
 <span class="normal"> 83</span>
 <span class="normal"> 84</span>
 <span class="normal"> 85</span>
@@ -747,7 +742,12 @@
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
-<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_HTAN_data_manifest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_HTAN_data_manifest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    validating a HTAN manifest</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -761,7 +761,7 @@
 
     <span class="n">record_run_time_result</span><span class="p">(</span>
         <span class="n">endpoint_name</span><span class="o">=</span><span class="s2">&quot;model/validate&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.&quot;</span><span class="p">,</span>
         <span class="n">data_schema</span><span class="o">=</span><span class="s2">&quot;HTAN data schema&quot;</span><span class="p">,</span>
         <span class="n">num_rows</span><span class="o">=</span><span class="mi">773</span><span class="p">,</span>  <span class="c1"># number of rows of the manifest being validated</span>
         <span class="n">data_type</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;data_type&quot;</span><span class="p">],</span>  <span class="c1"># data type</span>
@@ -793,12 +793,7 @@
 
       <details class="quote">
         <summary>Source code in <code>APITests/manifest-validate.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
@@ -821,7 +816,12 @@
 <span class="normal">72</span>
 <span class="normal">73</span>
 <span class="normal">74</span>
-<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_example_data_manifest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_example_data_manifest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    validating an example data manifest</span>
 <span class="sd">    &quot;&quot;&quot;</span>
