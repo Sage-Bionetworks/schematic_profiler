@@ -1,6 +1,6 @@
 # Schematic profiler
 
-Schematic profiler was created for developers in FAIR data team to measure performance of schematic API endpoints. For more context, please visit the jira page [here](https://sagebionetworks.jira.com/wiki/spaces/~392696258/pages/2894757895/Monitoring+schematic+APIs).
+Schematic profiler was created for developers in FAIR data team to measure performance of schematic API endpoints. For more context, please visit the jira page [here](https://sagebionetworks.jira.com/wiki/spaces/~392696258/pages/2894757895/Monitoring+schematic+APIs). See code reference [here](https://sage-bionetworks.github.io/schematic_profiler/)
 
 ## When to use schematic profiler?
 Schematic profiler is primarily used for measuring the performance of endpoints after schematic dev deployment and ensure the code that we added do not significantly increase latency. Please DO NOT run schematic profiler on staging and prod. In addition, by modifying the `BASE_URL` variable in `APITests/utils.py` and `CONCURRENT_THREADS` variable in the beginning of individual test file, you could effectively send concurrent requests to either local schematic APIs or AWS schematic dev instance.
