@@ -133,7 +133,7 @@ class ManifestSubmit:
             send_example_patient_manifest,
         )
 
-    def submit_dataflow_manifest_HTAN(self):
+    def submit_dataflow_manifest(self):
         params = self.params
         # update parameter.
         params["table_manipulation"] = "replace"
@@ -156,4 +156,4 @@ sm_example_manifest = ManifestSubmit(EXAMPLE_SCHEMA_URL)
 sm_example_manifest.submit_example_manifeset_patient()
 
 sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
-sm_dataflow_manifest.submit_dataflow_manifest_HTAN()
+sm_dataflow_manifest.submit_dataflow_manifest()
