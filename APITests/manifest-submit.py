@@ -94,13 +94,13 @@ class ManifestSubmit:
                     num_rows = 600
                 elif "dataflow" in description:
                     data_schema = "Data flow schema"
-                    num_rows = 536
+                    num_rows = 30
                 else:
                     data_schema = None
 
                 record_run_time_result(
                     endpoint_name="model/submit",
-                    description=f"{description} {record_type} with validation set to {validate_setting}. The manifest has 600 rows.",
+                    description=f"{description} {record_type} with validation set to {validate_setting}. The manifest has {num_rows} rows.",
                     data_schema=data_schema,
                     num_rows=num_rows,  # number of rows of manifest being submitted
                     data_type=params["data_type"],
@@ -124,6 +124,7 @@ class ManifestSubmit:
         record_type_lst = ["table_and_file", "file_only"]
 
         description = "Submitting an example manifest as"
+
         self.execute_manifest_submission(
             data_type_lst,
             record_type_lst,
@@ -139,7 +140,7 @@ class ManifestSubmit:
 
         # update parameter
         data_type_lst = ["DataFlow", None]
-        record_type_lst = ["table_and_file", "file_only"]
+        record_type_lst = ["file_only"]
         description = "Submitting a dataflow manifest for HTAN as"
 
         self.execute_manifest_submission(
