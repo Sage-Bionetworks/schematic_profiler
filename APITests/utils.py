@@ -32,24 +32,28 @@ DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_
 BASE_URL = "https://schematic-dev.api.sagebionetworks.org/v1"
 
 
-def fetch(url: str, params: dict) -> Response:
+def fetch(url: str, params: dict, headers: dict = None) -> Response:
     """
     Trigger a get request
     Args:
         url (str): the url to run a given api request
         params (dict): parameter of running a given api request
+        headers (dict): headers used for API requests. For example, authorization headers.
     Returns:
         Response: a response object
     """
-    return requests.get(url, params=params)
+    return requests.get(url, params=params, headers=headers)
 
 
-def send_example_patient_manifest(url: str, params: dict) -> Response:
+def send_example_patient_manifest(
+    url: str, params: dict, headers: dict = None
+) -> Response:
     """
     sending an example patient manifest
     Args:
          url (str): the url to run a given api request
          params (dict): parameters of running the post request
+         headers (dict): headers used for API requests. For example, authorization headers.
     Returns:
         Response: a response object
     """
@@ -61,6 +65,7 @@ def send_example_patient_manifest(url: str, params: dict) -> Response:
     return requests.post(
         url,
         params=params,
+        headers=headers,
         files={"file_name": open(test_manifest_path, "rb")},
     )
 
@@ -70,6 +75,7 @@ def send_post_request(
     params: dict,
     concurrent_threads: int,
     manifest_to_send_func: Callable[[str, dict], Response],
+    headers: dict = None,
 ) -> Tuple[str, float, dict]:
     """
     sending post requests
@@ -78,6 +84,7 @@ def send_post_request(
         base_url (str): url of endpoint
         concurrent_threads (int): number of concurrent threads
         manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
+        headers (dict): headers used for API requests. For example, authorization headers.
 
     Returns:
         dt_string (str): start time of running the API endpoints.
@@ -89,7 +96,7 @@ def send_post_request(
     try:
         # send request and calculate run time
         dt_string, time_diff, status_code_dict = cal_time_api_call_post_request(
-            base_url, params, concurrent_threads, manifest_to_send_func
+            base_url, params, concurrent_threads, manifest_to_send_func, headers
         )
     # TO DO: add more details about raising different exception
     # Should exception based on response type?
@@ -100,7 +107,7 @@ def send_post_request(
 
 
 def send_request(
-    base_url: str, params: dict, concurrent_threads: int
+    base_url: str, params: dict, concurrent_threads: int, headers: dict = None
 ) -> Tuple[str, float, dict]:
     """
     sending requests to manifest/generate endpoint
@@ -108,6 +115,7 @@ def send_request(
         params (dict): a dictionary of parameters to send
         base_url (str): url of endpoint
         concurrent_threads (int): number of concurrent threads
+        headers (dict): headers used for API requests. For example, authorization headers.
     Returns:
         dt_string (str): start time of running the API endpoints.
         time_diff (float): time of finish running all requests.
@@ -116,7 +124,7 @@ def send_request(
     try:
         # send request and calculate run time
         dt_string, time_diff, status_code_dict = cal_time_api_call(
-            base_url, params, concurrent_threads
+            base_url, params, concurrent_threads, headers
         )
     # TO DO: add more details about raising different exception
     # Should exception based on response type?
@@ -183,7 +191,7 @@ def login_synapse() -> synapseclient.Synapse:
 
 
 def cal_time_api_call(
-    url: str, params: dict, concurrent_threads: int
+    url: str, params: dict, concurrent_threads: int, headers: dict = None
 ) -> Tuple[str, float, dict]:
     """
     calculate the latency of api calls by sending get requests.
@@ -191,6 +199,7 @@ def cal_time_api_call(
         url (str): the url that users want to access
         params (dict): the parameters need to use for the request
         concurrent_threads (int): number of concurrent threads requested by users
+        headers (dict): a header of dictionary
     Returns:
         dt_string (str): start time of running the API endpoints.
         time_diff (float): time of finish running all requests.
@@ -203,7 +212,8 @@ def cal_time_api_call(
     # execute concurrent requests
     with ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(fetch, url, params) for x in range(concurrent_threads)
+            executor.submit(fetch, url, params, headers)
+            for x in range(concurrent_threads)
         ]
         all_status_code = {"200": 0, "500": 0, "503": 0, "504": 0}
         for f in concurrent.futures.as_completed(futures):
@@ -228,6 +238,7 @@ def cal_time_api_call_post_request(
     params: dict,
     concurrent_threads: int,
     manifest_to_send_func: Callable[[str, dict], Response],
+    headers: dict = None,
 ) -> Tuple[str, float, dict]:
     """
     calculate the latency of api calls by sending post.
@@ -236,6 +247,7 @@ def cal_time_api_call_post_request(
         params (dict): the parameters need to use for the request
         concurrent_threads (int): number of concurrent threads requested by users
         manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
+        headers (dict): headers used for API requests. For example, authorization headers.
     Returns:
         dt_string (str): start time of running the API endpoints.
         time_diff (float): time of finish running all requests.
@@ -248,7 +260,7 @@ def cal_time_api_call_post_request(
     # execute concurrent requests
     with ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(manifest_to_send_func, url, params)
+            executor.submit(manifest_to_send_func, url, params, headers)
             for x in range(concurrent_threads)
         ]
         all_status_code = {"200": 0, "500": 0, "503": 0, "504": 0}

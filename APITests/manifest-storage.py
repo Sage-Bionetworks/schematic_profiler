@@ -10,9 +10,8 @@ class ManifestStorage:
     token: str = get_access_token()
 
     def __post_init__(self):
-        self.params: dict = {
-            "access_token": self.token,
-        }
+        self.params = {}
+        self.headers = {"Authorization": f"Bearer {self.token}"}
 
 
 class RetrieveAssetView(ManifestStorage):
@@ -31,7 +30,7 @@ class RetrieveAssetView(ManifestStorage):
         # TO DO: add csv
         params["return_type"] = "json"
         dt_string, time_diff, status_code_dict = send_request(
-            base_url, params, CONCURRENT_THREADS
+            base_url, params, CONCURRENT_THREADS, headers=self.headers
         )
 
         record_run_time_result(
@@ -61,7 +60,7 @@ class RestrieveProjectDataset(ManifestStorage):
         params["project_id"] = project_id
 
         dt_string, time_diff, status_code_dict = send_request(
-            base_url, params, CONCURRENT_THREADS
+            base_url, params, CONCURRENT_THREADS, headers=self.headers
         )
 
         record_run_time_result(

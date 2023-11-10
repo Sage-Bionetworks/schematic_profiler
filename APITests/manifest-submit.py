@@ -8,7 +8,7 @@ from requests import Response
 
 from utils import (
     BASE_URL,
-    DATA_FLOW_SCHEMA_URL,
+    # DATA_FLOW_SCHEMA_URL,
     EXAMPLE_SCHEMA_URL,
     get_access_token,
     record_run_time_result,
@@ -24,10 +24,10 @@ base_url = f"{BASE_URL}/model/submit"
 class ManifestSubmit:
     url: str
     dataset_id: str = "syn51376664"
-    token: str = get_access_token()
     asset_view: str = "syn51376649"
     restrict_rules: bool = False
     use_schema_label: bool = True
+    token: str = get_access_token()
 
     def __post_init__(self):
         self.params = {
@@ -36,11 +36,13 @@ class ManifestSubmit:
             "asset_view": self.asset_view,
             "restrict_rules": self.restrict_rules,
             "use_schema_label": self.use_schema_label,
-            "access_token": self.token,
         }
+        self.headers = {"Authorization": f"Bearer {self.token}"}
 
     @staticmethod
-    def send_HTAN_dataflow_manifest(url: str, params: dict) -> Response:
+    def send_HTAN_dataflow_manifest(
+        url: str, params: dict, headers: dict = None
+    ) -> Response:
         """
         sending an example dataflow manifest for HTAN
         Args:
@@ -54,6 +56,7 @@ class ManifestSubmit:
         return requests.post(
             url,
             params=params,
+            headers=headers,
             files={"file_name": open(test_manifest_path, "rb")},
         )
 
@@ -64,6 +67,7 @@ class ManifestSubmit:
         params: dict,
         description: str,
         manifest_to_send_func: Callable[[str, dict], Response],
+        headers: dict,
     ):
         """
         Submitting a manifest with different parameters set by users and record latency
@@ -73,6 +77,7 @@ class ManifestSubmit:
             params (dict): a dictionary of parameters specified by the users
             description (str): a short description of what the submission is. I.E. submitting XX manifest as
             manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
+            headers (dict): headers used for API requests. For example, authorization headers.
         """
         for opt in data_type_lst:
             for record_type in record_type_lst:
@@ -80,7 +85,11 @@ class ManifestSubmit:
                 params["manifest_record_type"] = record_type
 
                 dt_string, time_diff, status_code_dict = send_post_request(
-                    base_url, params, CONCURRENT_THREADS, manifest_to_send_func
+                    base_url,
+                    params,
+                    CONCURRENT_THREADS,
+                    manifest_to_send_func,
+                    headers=headers,
                 )
 
                 if opt:
@@ -131,6 +140,7 @@ class ManifestSubmit:
             params,
             description,
             send_example_patient_manifest,
+            headers=self.headers,
         )
 
     def submit_dataflow_manifest(self):
@@ -149,11 +159,12 @@ class ManifestSubmit:
             params,
             description,
             self.send_HTAN_dataflow_manifest,
+            headers=self.headers,
         )
 
 
 sm_example_manifest = ManifestSubmit(EXAMPLE_SCHEMA_URL)
 sm_example_manifest.submit_example_manifeset_patient()
 
-sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
-sm_dataflow_manifest.submit_dataflow_manifest()
+# sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
+# sm_dataflow_manifest.submit_dataflow_manifest()
