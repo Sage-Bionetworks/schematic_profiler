@@ -27,8 +27,9 @@ class GenerateManifest:
             "title": self.title,
             "data_type": self.data_type,
             "use_annotations": self.use_annotation,
-            "access_token": self.token,
         }
+
+        self.headers = {"Authorization": f"Bearer {self.token}"}
 
     def generate_new_manifest_example_model(self):
         """
@@ -104,7 +105,7 @@ class GenerateManifest:
         params["asset_view"] = "syn23643253"
 
         dt_string, time_diff, status_code_dict = send_request(
-            base_url, self.params, CONCURRENT_THREADS
+            base_url, self.params, CONCURRENT_THREADS, self.headers
         )
 
         record_run_time_result(

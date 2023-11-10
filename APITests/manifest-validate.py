@@ -12,6 +12,7 @@ from utils import (
     record_run_time_result,
     send_example_patient_manifest,
     send_post_request,
+    get_access_token,
 )
 
 CONCURRENT_THREADS = 2
@@ -22,11 +23,13 @@ base_url = f"{BASE_URL}/model/validate"
 @dataclass
 class ManifestValidate:
     url: str
+    token: str = get_access_token()
 
     def __post_init__(self):
         self.params: dict = {
             "schema_url": self.url,
         }
+        self.headers = {"Authorization": f"Bearer {self.token}"}
 
     @staticmethod
     def send_HTAN_biospecimen_manifest_to_validate(url: str, params: dict) -> Response:
