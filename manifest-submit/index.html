@@ -549,7 +549,8 @@
 <span class="normal">160</span>
 <span class="normal">161</span>
 <span class="normal">162</span>
-<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="normal">163</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ManifestSubmit</span><span class="p">:</span>
     <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;syn51376664&quot;</span>
@@ -678,7 +679,8 @@
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;table_manipulation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;replace&quot;</span>
 
         <span class="c1"># update parameter</span>
-        <span class="n">data_type_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DataFlow&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="c1"># temporary remove validation of data flow manifest</span>
+        <span class="n">data_type_lst</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
         <span class="n">record_type_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;file_only&quot;</span><span class="p">]</span>
         <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Submitting a dataflow manifest for HTAN as&quot;</span>
 
