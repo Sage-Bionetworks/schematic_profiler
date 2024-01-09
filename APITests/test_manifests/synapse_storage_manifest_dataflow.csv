@@ -1,30 +1,17 @@
-Component,contributor,data_portal,dataset,dataset_name,embargo,entityId,num_items,release_scheduled,released,standard_compliance,Uuid
-DataFlow,FAIR Demo Project A,TRUE,Biospecimen,Biospecimen,2023-05-01,syn50896963,14,2022-06-01,TRUE,TRUE,5a6bcae4-24e2-4d56-9f9f-46c57442e732
-DataFlow,FAIR Demo Project A,FALSE,Patient,Patient,2023-05-01,syn50896965,14,2022-06-01,TRUE,TRUE,207f56a8-128f-41e9-809f-f3d65bf6d1fd
-DataFlow,FAIR Demo Project A,FALSE,ScRNA-seqLevel1,Sc_rna_seq_level1,2023-05-01,syn50900294,5,2022-06-01,TRUE,TRUE,76bf7d09-a55e-4140-a0bb-42d8e5ac643f
-DataFlow,FAIR Demo Project A,FALSE,ScRNA-seqLevel2,Sc_rna_seq_level2,2023-05-01,syn50900295,4,2022-06-01,FALSE,TRUE,0ad04ef1-567e-4392-afe1-7cd445704828
-DataFlow,FAIR Demo Project A,FALSE,Not Applicable,Sc_rna_seq_level3,2023-05-01,syn50900298,0,2022-06-01,FALSE,FALSE,08108a23-8675-4fc2-8be8-7d4eba73dcdc
-DataFlow,FAIR Demo Project A,FALSE,Not Applicable,test_empty_folder,2023-05-01,syn50907675,0,2022-06-01,FALSE,FALSE,ad20b3e1-6b7d-4f6f-8f6e-03a29dceec11
-DataFlow,FAIR Demo Project A,FALSE,BulkWESLevel1,whole_exome_lvl1,2023-05-01,syn50907678,23,2022-06-01,TRUE,TRUE,2ddc9d96-5d03-4d5b-93af-dbd48c3a3cb1
-DataFlow,FAIR Demo Project A,FALSE,BulkWESLevel2,whole_exome_lvl2,2023-05-01,syn50907679,6,2023-04-01,TRUE,TRUE,9bc7e0e0-e88d-4809-8364-aec5be2e893b
-DataFlow,FAIR Demo Project A,FALSE,BulkWESLevel3,whole_exome_lvl3,2023-05-01,syn50907680,4,2023-04-01,FALSE,TRUE,d8f78049-359a-4493-80a8-ef0714db6a6d
-DataFlow,FAIR Demo Project A,FALSE,Not Applicable,archive,2023-05-01,syn51196547,0,2023-04-01,FALSE,FALSE,ba054e9a-8533-413b-aab6-35a4ffb20d00
-DataFlow,FAIR Demo Project A,FALSE,Biospecimen,biospecimen_prev_empty,2023-05-01,syn51210619,14,2023-04-01,FALSE,FALSE,eb3f89f5-4b8a-4a7e-9c70-c5910cbfe1ce
-DataFlow,FAIR Demo Project B,FALSE,Biospecimen,Biospecimen,2023-05-01,syn50907492,14,2023-01-01,FALSE,TRUE,e2c5fc91-a692-4393-a1b9-aa8ab05a33b2
-DataFlow,FAIR Demo Project B,TRUE,Patient,Patient,2023-05-01,syn50907495,14,2023-01-01,TRUE,TRUE,9fb37ab1-b40c-4b76-abb5-b24226be8e88
-DataFlow,FAIR Demo Project B,TRUE,ScRNA-seqLevel1,Sc_rna_seq_level1,2023-05-01,syn50907500,5,2023-01-01,TRUE,TRUE,4a9157c9-b03c-44c8-bb42-cd869d875b01
-DataFlow,FAIR Demo Project B,TRUE,ScRNA-seqLevel2,Sc_rna_seq_level2,2023-05-01,syn50907504,4,2023-01-01,TRUE,TRUE,715e0ec2-7b90-4772-b5ff-5f837a05b65a
-DataFlow,FAIR Demo Project B,FALSE,Not Applicable,Sc_rna_seq_level3,2023-05-01,syn50907506,0,2023-01-01,FALSE,FALSE,b066c4c2-6f49-4002-a07a-bbff2489fe38
-DataFlow,FAIR Demo Project B,FALSE,ScRNA-seqLevel1,SC_RNA_SEQ_LVL1_testing,2023-05-01,syn51198797,5,2023-01-01,FALSE,FALSE,e7b715aa-0710-4772-8315-1c1e13d54db6
-DataFlow,FAIR Demo Project B,FALSE,Patient,patient,2023-05-01,syn51217068,14,2023-01-01,FALSE,FALSE,23db4b2b-bc3f-4545-8918-7abec2450160
-DataFlow,FAIR Demo Project B,FALSE,Not Applicable,empty_tst,2023-05-01,syn51362729,0,2023-01-01,FALSE,FALSE,17f229fb-788e-468b-80e0-3db39981161a
-DataFlow,FAIR demo data,FALSE,Biospecimen,biospecimen,2023-05-01,syn35294937,1,2023-01-01,FALSE,FALSE,ecaa1f57-7f6b-40da-9840-79cef07fe308
-DataFlow,FAIR demo data,TRUE,Patient,patient,2023-05-01,syn36003517,3,2022-10-01,FALSE,TRUE,027a7f9a-f928-4de6-9c65-5bb20593e75b
-DataFlow,FAIR demo data,FALSE,BulkRNA-seqAssay,bulk RNA seq,2023-05-01,syn36003526,2,2023-06-01,FALSE,TRUE,d0443802-e50c-4b1a-9a20-4e17d2119243
-DataFlow,FAIR demo data,TRUE,Patient,MockComponent,2023-05-01,syn44539618,4,2022-10-01,TRUE,TRUE,ae3e898c-a62d-452f-b2a9-36d6a2530be5
-DataFlow,FAIR demo data,FALSE,OtherAssay,other assay,2023-05-01,syn51118988,1,2022-10-01,FALSE,FALSE,c7cb3e3d-714d-43a6-9e46-89a34e229f4e
-DataFlow,FAIR demo data,FALSE,Not Applicable,multi-user test,2023-05-01,syn51339739,0,2022-10-01,FALSE,FALSE,9e9cbe11-b5cb-4f83-b00e-01c9e35894bd
-DataFlow,FAIR demo data,FALSE,Not Applicable,patient-test,2023-05-01,syn51340084,0,2022-10-01,FALSE,FALSE,1cc7ca4f-acde-48ab-8967-7b8bd2f76fcf
-DataFlow,FAIR demo data,FALSE,Biospecimen,A Biospecimen,2023-05-01,syn51565093,0,2022-10-01,FALSE,FALSE,162a8d82-b0df-4f9e-be79-888402e2053a
-DataFlow,FAIR demo data,FALSE,Biospecimen,Biospecimen_lung,2023-05-01,syn51613478,0,2022-10-01,FALSE,FALSE,878bc94b-0eb1-4ead-9e4d-275f99b6a589
-DataFlow,FAIR demo data,FALSE,Biospecimen,Biospecimen_colon,2023-05-01,syn51613479,0,2022-10-01,FALSE,FALSE,89af570c-c1ae-4989-b47e-a069a315e57b
+Component,contributor,dataset_id,dataset_name,dataset_type,upload_date,num_items,dataset_size,scheduled_release_date,release_date,status,released_destinations,released,metadata_check,governance_compliance
+DataFlow,HTAN A,syn120,biospecimen,Biospecimen,2023-10-20,30,5,2024-03-20,Not applicable,scheduled for release,data portal,FALSE,FALSE,FALSE
+DataFlow,HTAN A,syn123,patient,Patient,2023-10-20,10,1,2024-03-20,Not applicable,scheduled for release,data portal,FALSE,FALSE,FALSE
+DataFlow,HTAN A,syn125,demo_data,Demographic,2023-10-15,10,1,2024-03-20,Not applicable,scheduled for release,data portal,FALSE,FALSE,FALSE
+DataFlow,HTAN A,syn128,biospecimen_2,Biospecimen,2023-10-15,10,1,2024-03-20,Not applicable,scheduled for release,data portal,FALSE,FALSE,FALSE
+DataFlow,HTAN A,syn122,other_assay,Other Assay,2023-10-15,20,1.5,2024-03-20,Not applicable,scheduled for release,data portal,FALSE,FALSE,FALSE
+DataFlow,HTAN B,syn234,patient,Not applicable,Not applicable,5,2,Not applicable,Not applicable,Not uploaded,Not applicable,FALSE,FALSE,FALSE
+DataFlow,HTAN B,syn203,biospecimen,Not applicable,Not applicable,5,2,Not applicable,Not applicable,Not uploaded,Not applicable,FALSE,FALSE,FALSE
+DataFlow,HTAN B,syn222,other_assay,Not applicable,Not applicable,15,4,Not applicable,Not applicable,Not uploaded,Not applicable,FALSE,FALSE,FALSE
+DataFlow,HTAN C,syn300,biospecimen,Biospecimen,2022-08-29,50,10,2022-09-01,Not applicable,ready for release,dbGaP,FALSE,TRUE,TRUE
+DataFlow,HTAN C,syn302,patient,Patient,2022-08-15,25,5,2022-09-01,Not applicable,ready for release,dbGaP,FALSE,TRUE,TRUE
+DataFlow,HTAN C,syn345,demo_data,Demographic,2022-08-15,25,5,2022-09-01,Not applicable,ready for release,dbGaP,FALSE,TRUE,TRUE
+DataFlow,HTAN C,syn340,biospecimen_2,Biospecimen,2022-08-15,3,1,2022-09-01,Not applicable,preprocessing,dbGaP,FALSE,FALSE,TRUE
+DataFlow,HTAN C,syn355,other_assay,Other Assay,2022-08-15,75,15,2022-09-01,Not applicable,preprocessing,dbGaP,FALSE,FALSE,TRUE
+DataFlow,HTAN C,syn321,patient,Patient,2022-08-15,5,2,2022-09-01,Not applicable,preprocessing,dbGaP,FALSE,TRUE,FALSE
+DataFlow,HTAN C,syn340,other_assay,Other Assay_2,2022-08-15,5,2,2022-09-01,Not applicable,quarantine,dbGaP,FALSE,FALSE,FALSE
+DataFlow,HTAN C,syn355,other_assay,Other Assay_3,Not applicable,5,2,2022-09-01,Not applicable,Not uploaded,dbGaP,FALSE,FALSE,FALSE

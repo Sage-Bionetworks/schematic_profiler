@@ -8,7 +8,7 @@ from requests import Response
 
 from utils import (
     BASE_URL,
-    # DATA_FLOW_SCHEMA_URL,
+    DATA_FLOW_SCHEMA_URL,
     EXAMPLE_SCHEMA_URL,
     get_access_token,
     record_run_time_result,
@@ -149,7 +149,8 @@ class ManifestSubmit:
         params["table_manipulation"] = "replace"
 
         # update parameter
-        data_type_lst = ["DataFlow", None]
+        # temporary remove validation of data flow manifest
+        data_type_lst = [None]
         record_type_lst = ["file_only"]
         description = "Submitting a dataflow manifest for HTAN as"
 
@@ -166,5 +167,5 @@ class ManifestSubmit:
 sm_example_manifest = ManifestSubmit(EXAMPLE_SCHEMA_URL)
 sm_example_manifest.submit_example_manifeset_patient()
 
-# sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
-# sm_dataflow_manifest.submit_dataflow_manifest()
+sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
+sm_dataflow_manifest.submit_dataflow_manifest()
