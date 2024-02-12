@@ -43,7 +43,7 @@ def fetch(url: str, params: dict, headers: dict = None) -> Response:
     Returns:
         Response: a response object
     """
-    return requests.get(url, params=params, headers=headers, verify=False)
+    return requests.get(url, params=params, headers=headers)
 
 
 def send_example_patient_manifest(
