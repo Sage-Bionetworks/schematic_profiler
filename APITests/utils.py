@@ -28,7 +28,8 @@ HTAN_SCHEMA_URL = (
     "https://raw.githubusercontent.com/ncihtan/data-models/main/HTAN.model.jsonld"
 )
 
-DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_model/dataflow_component.jsonld"
+DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_model/dataflow_component.csv"
+
 BASE_URL = "https://schematic-dev.api.sagebionetworks.org/v1"
 
 
@@ -42,7 +43,8 @@ def fetch(url: str, params: dict, headers: dict = None) -> Response:
     Returns:
         Response: a response object
     """
-    return requests.get(url, params=params, headers=headers)
+    logging.basicConfig(level=logging.DEBUG, format="%(message)s")
+    return requests.get(url, params=params, headers=headers, verify=False)
 
 
 def send_example_patient_manifest(
