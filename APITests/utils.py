@@ -43,7 +43,6 @@ def fetch(url: str, params: dict, headers: dict = None) -> Response:
     Returns:
         Response: a response object
     """
-    logging.basicConfig(level=logging.DEBUG, format="%(message)s")
     return requests.get(url, params=params, headers=headers, verify=False)
 
 
