@@ -6,7 +6,8 @@ on:
   push:
     branches: ['develop', 'develop-add-tests'] # for testing purpose, added develop-add-tests
   workflow_dispatch: # allow workflow to be manually triggered
-
+  repository_dispatch:
+    types: [trigger-profiler]
 
 jobs:
   Benchmarch-Latency:
@@ -20,7 +21,7 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Activate a virtual environment 
+      - name: Activate a virtual environment
         run: |
           pip install --upgrade pip
           python3.10 -m venv venv
@@ -34,4 +35,3 @@ jobs:
           SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
           SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
         run: python3 APITests/manifest-generator.py APITests/manifest-submit.py APITests/manifest-validate.py APITest/manifest-storage.py
-
