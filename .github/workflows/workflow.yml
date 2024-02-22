@@ -2,7 +2,7 @@ name: aws-api-test
 
 on:
   push:
-    branches: ['develop'] # for testing purpose, added develop-add-tests
+    branches: ['develop']
   workflow_dispatch: # allow workflow to be manually triggered
   repository_dispatch:
     types: [trigger-profiler]
