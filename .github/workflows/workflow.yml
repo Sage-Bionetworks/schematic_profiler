@@ -1,6 +1,4 @@
 name: aws-api-test
-
-# Only trigger, when the build workflow succeeded
 on:
   workflow_dispatch: # allow workflow to be manually triggered
   repository_dispatch:
