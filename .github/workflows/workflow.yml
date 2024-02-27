@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   Benchmarch-Latency:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04-4core-16GBRAM-150GBSSD
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
