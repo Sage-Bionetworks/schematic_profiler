@@ -42,6 +42,7 @@ jobs:
           SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
         run:
           |
+          cd APITests
           python3 APITests/manifest-storage.py
           python3 APITests/manifest-validate.py
           python3 APITests/manifest-submit.py
