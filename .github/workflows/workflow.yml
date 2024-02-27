@@ -36,13 +36,12 @@ jobs:
       - name: Install dependencies
         run: pip3 install -r requirements.txt
 
-      - name: Generate manifest test
+      - name: Run all benchmark tests
         env:
           SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
           SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
         run:
           |
-            #!/bin/bash
-            # Your bash script commands here
-            cd APITests
-            for f in *.py; do python3 "$f"; done
+          python3 APITests/manifest-storage.py
+          python3 APITests/manifest-validate.py
+          python3 APITests/manifest-submit.py
