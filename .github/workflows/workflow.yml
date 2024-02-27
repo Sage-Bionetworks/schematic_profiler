@@ -36,8 +36,13 @@ jobs:
       - name: Install dependencies
         run: pip3 install -r requirements.txt
 
-      - name: Generate manifest test
+      - name: Run all benchmark tests
         env:
           SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
           SERVICE_ACCOUNT_CREDS: ${{ secrets.SERVICE_ACCOUNT_CREDS }}
-        run: python3 APITests/manifest-generator.py APITests/manifest-submit.py APITests/manifest-validate.py APITest/manifest-storage.py
+        run:
+          |
+          cd APITests
+          python3 manifest-storage.py
+          python3 manifest-validate.py
+          python3 manifest-submit.py
