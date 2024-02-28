@@ -44,6 +44,4 @@ jobs:
         run:
           |
           cd APITests
-          python3 manifest-storage.py
-          python3 manifest-validate.py
-          python3 manifest-submit.py
+          python3 multi-processing.py
