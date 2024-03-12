@@ -1,23 +1,25 @@
 from dataclasses import dataclass
-
+import logging
 from utils import (
     BASE_URL,
     EXAMPLE_SCHEMA_URL,
     HTAN_SCHEMA_URL,
-    get_access_token,
-    record_run_time_result,
+    StoreRuntime,
     send_request,
+    save_run_time_result,
 )
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/manifest/generate"
+
+logger = logging.getLogger("manifest-generator")
 
 
 @dataclass
 class GenerateManifest:
     url: str
     use_annotation: bool = False
-    token: str = get_access_token()
+    token: str = StoreRuntime.get_access_token()
     title: str = "example"
     data_type: str = "Patient"
 
@@ -39,7 +41,7 @@ class GenerateManifest:
             base_url, self.params, CONCURRENT_THREADS
         )
 
-        record_run_time_result(
+        return save_run_time_result(
             endpoint_name="manifest/generate",
             description="Generating a manifest as a google sheet by using the example data model",
             data_schema="example data schema",
@@ -64,9 +66,9 @@ class GenerateManifest:
             base_url, self.params, CONCURRENT_THREADS
         )
 
-        record_run_time_result(
+        return save_run_time_result(
             endpoint_name="manifest/generate",
-            description="Generating a manifest as an excel spreadsheet  by using the example data model",
+            description="Generating a manifest as an excel spreadsheet by using the example data model",
             data_schema="example data schema",
             data_type=self.data_type,
             output_format="excel",
@@ -84,7 +86,7 @@ class GenerateManifest:
             base_url, self.params, CONCURRENT_THREADS
         )
 
-        record_run_time_result(
+        return save_run_time_result(
             endpoint_name="manifest/generate",
             description="Generating a manifest as a google spreadsheet by using the HTAN data model",
             data_schema="HTAN data schema",
@@ -108,7 +110,7 @@ class GenerateManifest:
             base_url, self.params, CONCURRENT_THREADS, self.headers
         )
 
-        record_run_time_result(
+        return save_run_time_result(
             endpoint_name="manifest/generate",
             description="Generating an existing manifest as a google sheet by using the example data model",
             data_schema="example data schema",
@@ -122,10 +124,14 @@ class GenerateManifest:
         )
 
 
-gm_example = GenerateManifest(EXAMPLE_SCHEMA_URL)
-gm_example.generate_new_manifest_example_model()
-gm_example.generate_new_manifest_example_model_excel("excel")
-gm_example.generate_existing_manifest_google_sheet()
+def monitor_manifest_generator():
+    logger.info("Monitoring manifest generation")
+    gm_example = GenerateManifest(EXAMPLE_SCHEMA_URL)
+    row_one = gm_example.generate_new_manifest_example_model()
+    row_two = gm_example.generate_new_manifest_example_model_excel("excel")
+    row_three = gm_example.generate_existing_manifest_google_sheet()
 
-gm_htan = GenerateManifest(HTAN_SCHEMA_URL)
-gm_htan.generate_new_manifest_HTAN_google_sheet()
+    gm_htan = GenerateManifest(HTAN_SCHEMA_URL)
+    row_four = gm_htan.generate_new_manifest_HTAN_google_sheet()
+
+    return row_one, row_two, row_three, row_four

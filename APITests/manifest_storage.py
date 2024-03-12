@@ -1,13 +1,20 @@
 from dataclasses import dataclass
-
-from utils import BASE_URL, get_access_token, record_run_time_result, send_request
+import logging
+from utils import (
+    BASE_URL,
+    StoreRuntime,
+    send_request,
+    save_run_time_result,
+)
 
 CONCURRENT_THREADS = 1
+
+logger = logging.getLogger("manifest-storage")
 
 
 @dataclass
 class ManifestStorage:
-    token: str = get_access_token()
+    token: str = StoreRuntime.get_access_token()
 
     def __post_init__(self):
         self.params = {}
@@ -33,7 +40,7 @@ class RetrieveAssetView(ManifestStorage):
             base_url, params, CONCURRENT_THREADS, headers=self.headers
         )
 
-        record_run_time_result(
+        return save_run_time_result(
             endpoint_name="storage/assets/tables",
             description=f"Retrieve asset view {asset_view} as a json",
             asset_view=asset_view,
@@ -63,7 +70,7 @@ class RestrieveProjectDataset(ManifestStorage):
             base_url, params, CONCURRENT_THREADS, headers=self.headers
         )
 
-        record_run_time_result(
+        return save_run_time_result(
             endpoint_name="storage/project/datasets",
             description=f"Retrieve all datasets under project {project_id} in asset view {asset_view} as a json",
             dt_string=dt_string,
@@ -81,7 +88,7 @@ class RestrieveProjectDataset(ManifestStorage):
         asset_view = "syn23643253"
         project_id = "syn26251192"
 
-        self.retrieve_project_dataset_api_call(project_id, asset_view)
+        return self.retrieve_project_dataset_api_call(project_id, asset_view)
 
     def retrieve_project_datasets_HTAN(self):
         """
@@ -91,12 +98,19 @@ class RestrieveProjectDataset(ManifestStorage):
         asset_view = "syn20446927"  # htan asset view
         project_id = "syn32596076"  # htan center c
 
-        self.retrieve_project_dataset_api_call(project_id, asset_view)
+        return self.retrieve_project_dataset_api_call(project_id, asset_view)
 
 
-retrieve_asset_view_class = RetrieveAssetView()
-retrieve_asset_view_class.retrieve_asset_view_as_json()
+def monitor_manifest_storage():
+    logger.info("Monitoring storage endpoints")
+    retrieve_asset_view_class = RetrieveAssetView()
+    row_one = retrieve_asset_view_class.retrieve_asset_view_as_json()
 
-retrieve_project_dataset = RestrieveProjectDataset()
-retrieve_project_dataset.retrieve_project_datasets_test()
-retrieve_project_dataset.retrieve_project_datasets_HTAN()
+    retrieve_project_dataset = RestrieveProjectDataset()
+    row_two = retrieve_project_dataset.retrieve_project_datasets_test()
+    row_three = retrieve_project_dataset.retrieve_project_datasets_HTAN()
+
+    row_one, row_two, row_three
+
+
+monitor_manifest_storage()

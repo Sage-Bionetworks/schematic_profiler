@@ -43,7 +43,8 @@ def fetch(url: str, params: dict, headers: dict = None) -> Response:
     Returns:
         Response: a response object
     """
-    return requests.get(url, params=params, headers=headers)
+    response = requests.get(url, params=params, headers=headers)
+    return response
 
 
 def send_example_patient_manifest(
@@ -63,6 +64,51 @@ def send_example_patient_manifest(
         wd, "test_manifests/synapse_storage_manifest_patient.csv"
     )
 
+    return requests.post(
+        url,
+        params=params,
+        headers=headers,
+        files={"file_name": open(test_manifest_path, "rb")},
+    )
+
+
+def send_HTAN_biospecimen_manifest_to_validate(
+    url: str, params: dict, headers: dict = None
+) -> Response:
+    """
+    sending a HTAN biospecimen manifest to validate
+    Args:
+        url (str): schematic validation endpoint
+        params (dict): a dictionary of parameters defined in schematic used by validation
+
+    Returns:
+        a response object
+    """
+    wd = os.getcwd()
+    test_manifest_path = os.path.join(
+        wd, "test_manifests/synapse_storage_manifest_HTAN_HMS.csv"
+    )
+    return requests.post(
+        url,
+        params=params,
+        headers=None,
+        files={"file_name": open(test_manifest_path, "rb")},
+    )
+
+
+def send_HTAN_dataflow_manifest(
+    url: str, params: dict, headers: dict = None
+) -> Response:
+    """
+    sending an example dataflow manifest for HTAN
+    Args:
+        url: url of endpoint
+        params: a dictionary of parameters specified by the users
+    """
+    wd = os.getcwd()
+    test_manifest_path = os.path.join(
+        wd, "test_manifests/synapse_storage_manifest_dataflow.csv"
+    )
     return requests.post(
         url,
         params=params,
@@ -111,7 +157,7 @@ def send_request(
     base_url: str, params: dict, concurrent_threads: int, headers: dict = None
 ) -> Tuple[str, float, dict]:
     """
-    sending requests to manifest/generate endpoint
+    sending requests to different endpoint
     Args:
         params (dict): a dictionary of parameters to send
         base_url (str): url of endpoint
@@ -122,6 +168,7 @@ def send_request(
         time_diff (float): time of finish running all requests.
         all_status_code (dict): dict; a dictionary that records the status code of run.
     """
+
     try:
         # send request and calculate run time
         dt_string, time_diff, status_code_dict = cal_time_api_call(
@@ -152,43 +199,6 @@ def return_time_now(name_funct_call: Callable = None) -> str:
         )
 
     return dt_string
-
-
-def get_access_token() -> str:
-    """Get access token to use asset store resources
-    Returns:
-        str: a token to access asset store
-    """
-    # for running on github action
-    if "SYNAPSE_AUTH_TOKEN" in os.environ:
-        token = os.environ["SYNAPSE_AUTH_TOKEN"]
-        logger.debug("Successfully found synapse access token")
-    else:
-        token = os.environ["TOKEN"]
-    if token is None or "":
-        logger.error("Synapse access token is not found")
-
-    return token
-
-
-def login_synapse() -> synapseclient.Synapse:
-    """
-    Login to synapse using the token provided
-    Returns:
-        synapse object
-    """
-    get_access_token()
-    try:
-        syn = synapseclient.Synapse()
-
-        # syn.default_headers["Authorization"] = f"Bearer {token}"
-        syn.login()
-    except (
-        synapseclient.core.exceptions.SynapseNoCredentialsError,
-        synapseclient.core.exceptions.SynapseHTTPError,
-    ) as e:
-        raise e
-    return syn
 
 
 def cal_time_api_call(
@@ -222,7 +232,9 @@ def cal_time_api_call(
                 status_code = f.result().status_code
                 status_code_str = str(status_code)
                 if status_code_str != "200":
-                    logger.error(f"Error running: {url} using params {params}")
+                    logger.error(
+                        f"{status_code} error running: {url} with using params {params}"
+                    )
                 all_status_code[status_code_str] = all_status_code[status_code_str] + 1
             except InvalidSchema:
                 raise InvalidSchema(
@@ -284,7 +296,7 @@ def cal_time_api_call_post_request(
     return dt_string, time_diff, all_status_code
 
 
-def record_run_time_result(
+def save_run_time_result(
     endpoint_name: str,
     description: str,
     dt_string: str,
@@ -316,42 +328,83 @@ def record_run_time_result(
         manifest_record_type (str, optional): default to None. Manifest storage type. Four options: file only, file+entities, table+file, table+file+entities
         asset view (str, optional): default to None. asset view of the asset store.
     """
-    # for debugging github action
-    return_time_now("Record run time")
-
     # get specific number of status code
     num_status_200 = status_code_dict["200"]
     num_status_500 = status_code_dict["500"]
     num_status_504 = status_code_dict["504"]
     num_status_503 = status_code_dict["503"]
 
-    # Load existing data from synapse
-    syn = login_synapse()
-
-    # get existing table from synapse
-    existing_table_schema = syn.get("syn51385540")
     new_row = [
-        [
-            endpoint_name,
-            description,
-            data_schema,
-            num_rows,
-            data_type,
-            output_format,
-            restrict_rules,
-            asset_view,
-            dt_string,
-            manifest_record_type,
-            num_concurrent,
-            latency,
-            num_status_200,
-            num_status_500,
-            num_status_504,
-            num_status_503,
-        ]
+        endpoint_name,
+        description,
+        data_schema,
+        num_rows,
+        data_type,
+        output_format,
+        restrict_rules,
+        asset_view,
+        dt_string,
+        manifest_record_type,
+        num_concurrent,
+        latency,
+        num_status_200,
+        num_status_500,
+        num_status_504,
+        num_status_503,
     ]
 
-    # add new row to table
-    syn.store(Table(existing_table_schema, new_row))
+    return new_row
 
-    logger.info("Finish uploading result to synapse. ")
+
+def combine_lists_into_list(*lists):
+    combined_list = [list(lst) for lst in lists]
+    return combined_list
+
+
+class StoreRuntime:
+    # store run time result
+    @staticmethod
+    def get_access_token() -> str:
+        """Get access token to use asset store resources
+        Returns:
+            str: a token to access asset store
+        """
+        # for running on github action
+        if "SYNAPSE_AUTH_TOKEN" in os.environ:
+            token = os.environ["SYNAPSE_AUTH_TOKEN"]
+            logger.debug("Successfully found synapse access token")
+        else:
+            token = os.environ["TOKEN"]
+        if token is None or "":
+            logger.error("Synapse access token is not found")
+
+        return token
+
+    def login_synapse(self) -> synapseclient.Synapse:
+        """
+        Login to synapse using the token provided
+        Returns:
+            synapse object
+        """
+        auth_token = self.get_access_token()
+        try:
+            syn = synapseclient.Synapse()
+            syn.login(authToken=auth_token)
+        except (
+            synapseclient.core.exceptions.SynapseNoCredentialsError,
+            synapseclient.core.exceptions.SynapseHTTPError,
+        ) as e:
+            raise e
+        return syn
+
+    def record_run_time_result_synapse(self, rows: list):
+        # Load existing data from synapse
+        syn = self.login_synapse()
+
+        # get existing table from synapse
+        existing_table_schema = syn.get("syn51385540")
+
+        # add new row to table
+        syn.store(Table(existing_table_schema, rows))
+
+        logger.info("Finish uploading result to synapse. ")
