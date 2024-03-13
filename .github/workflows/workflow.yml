@@ -44,4 +44,4 @@ jobs:
         run:
           |
           cd APITests
-          python3 run_scripts_parallel.py
+          python3 run_all_parallel.py

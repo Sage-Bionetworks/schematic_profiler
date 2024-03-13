@@ -28,4 +28,5 @@ if __name__ == "__main__":
                     print(f"can not insert {row}")
     # store results on synapse
     srt = StoreRuntime()
+    print(f"Inserting {len(all_rows_to_insert)} rows to Synapse")
     srt.record_run_time_result_synapse(rows=all_rows_to_insert)
