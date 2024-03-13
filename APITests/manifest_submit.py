@@ -1,9 +1,11 @@
 import time
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Tuple
 from requests import Response
 import logging
 from utils import (
+    Row,
+    MultiRow,
     BASE_URL,
     DATA_FLOW_SCHEMA_URL,
     EXAMPLE_SCHEMA_URL,
@@ -48,7 +50,7 @@ class ManifestSubmit:
         description: str,
         manifest_to_send_func: Callable[[str, dict], Response],
         headers: dict,
-    ) -> list:
+    ) -> MultiRow:
         """
         Submitting a manifest with different parameters set by users and record latency
         Args:
@@ -106,7 +108,7 @@ class ManifestSubmit:
 
         return combined_list
 
-    def submit_example_manifeset_patient(self):
+    def submit_example_manifeset_patient(self) -> MultiRow:
         """
         submitting an example data manifest
         """
@@ -127,7 +129,7 @@ class ManifestSubmit:
             headers=self.headers,
         )
 
-    def submit_dataflow_manifest(self):
+    def submit_dataflow_manifest(self) -> MultiRow:
         params = self.params
         # update parameter.
         params["table_manipulation"] = "replace"
@@ -148,7 +150,7 @@ class ManifestSubmit:
         )
 
 
-def monitor_manifest_submission():
+def monitor_manifest_submission() -> Tuple[Row, Row, Row]:
     logger.info("Monitoring manifest submission")
     sm_example_manifest = ManifestSubmit(EXAMPLE_SCHEMA_URL)
     rows = sm_example_manifest.submit_example_manifeset_patient()
@@ -156,7 +158,7 @@ def monitor_manifest_submission():
     sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
     row_three = sm_dataflow_manifest.submit_dataflow_manifest()
 
-    return rows[0], rows[1], row_three
+    return rows[0], rows[1], row_three[0]
 
 
 monitor_manifest_submission()

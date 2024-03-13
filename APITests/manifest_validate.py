@@ -1,9 +1,12 @@
 from dataclasses import dataclass
+from typing import Tuple
 import logging
 from utils import (
     BASE_URL,
     EXAMPLE_SCHEMA_URL,
     HTAN_SCHEMA_URL,
+    Row,
+    MultiRow,
     StoreRuntime,
     save_run_time_result,
     send_example_patient_manifest,
@@ -29,7 +32,7 @@ class ManifestValidate:
         }
         self.headers = {"Authorization": f"Bearer {self.token}"}
 
-    def validate_example_data_manifest(self):
+    def validate_example_data_manifest(self) -> MultiRow:
         """
         validating an example data manifest
         """
@@ -64,7 +67,7 @@ class ManifestValidate:
 
         return combined_results
 
-    def validate_HTAN_data_manifest(self):
+    def validate_HTAN_data_manifest(self) -> Row:
         """
         validating a HTAN manifest
         """
@@ -93,7 +96,7 @@ class ManifestValidate:
         )
 
 
-def monitor_manifest_validator():
+def monitor_manifest_validator() -> Tuple[Row, Row, Row]:
     logger.info("Monitoring manifest validation")
     vm_example_manifest = ManifestValidate(EXAMPLE_SCHEMA_URL)
     rows = vm_example_manifest.validate_example_data_manifest()

@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+from typing import Tuple
 import logging
 from utils import (
+    Row,
     BASE_URL,
     StoreRuntime,
     send_request,
@@ -22,7 +24,7 @@ class ManifestStorage:
 
 
 class RetrieveAssetView(ManifestStorage):
-    def retrieve_asset_view_as_json(self):
+    def retrieve_asset_view_as_json(self) -> Row:
         """
         Retrieve asset view table as a dataframe.
         """
@@ -52,7 +54,9 @@ class RetrieveAssetView(ManifestStorage):
 
 
 class RestrieveProjectDataset(ManifestStorage):
-    def retrieve_project_dataset_api_call(self, project_id: str, asset_view: str):
+    def retrieve_project_dataset_api_call(
+        self, project_id: str, asset_view: str
+    ) -> Row:
         """
         Make the API calls to retrieve all datasets from a given project
         Args:
@@ -80,7 +84,7 @@ class RestrieveProjectDataset(ManifestStorage):
             status_code_dict=status_code_dict,
         )
 
-    def retrieve_project_datasets_test(self):
+    def retrieve_project_datasets_test(self) -> Row:
         """
         Retrieve all datasets under a given example project
         """
@@ -90,7 +94,7 @@ class RestrieveProjectDataset(ManifestStorage):
 
         return self.retrieve_project_dataset_api_call(project_id, asset_view)
 
-    def retrieve_project_datasets_HTAN(self):
+    def retrieve_project_datasets_HTAN(self) -> Row:
         """
         Retrieve all datasets under a given testing HTAN project (used by DCA)
         """
@@ -101,7 +105,7 @@ class RestrieveProjectDataset(ManifestStorage):
         return self.retrieve_project_dataset_api_call(project_id, asset_view)
 
 
-def monitor_manifest_storage():
+def monitor_manifest_storage() -> Tuple[Row, Row, Row]:
     logger.info("Monitoring storage endpoints")
     retrieve_asset_view_class = RetrieveAssetView()
     row_one = retrieve_asset_view_class.retrieve_asset_view_as_json()

@@ -4,7 +4,7 @@ import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from typing import Callable, Tuple
+from typing import Callable, Tuple, List, Union
 
 import pytz
 import requests
@@ -55,6 +55,10 @@ HTAN_SCHEMA_URL = (
 DATA_FLOW_SCHEMA_URL = "https://raw.githubusercontent.com/Sage-Bionetworks/data_flow/main/inst/data_model/dataflow_component.csv"
 
 BASE_URL = "https://schematic-dev.api.sagebionetworks.org/v1"
+
+# define type Row
+Row = List[Union[str, int, dict, bool]]
+MultiRow = List[Row]
 
 
 def fetch(url: str, params: dict, headers: dict = None) -> Response:
@@ -334,7 +338,7 @@ def save_run_time_result(
     restrict_rules: bool = None,
     manifest_record_type: str = None,
     asset_view: str = None,
-) -> None:
+) -> Row:
     """
     Record the result of running an endpoint as a dataframe
     Args:
@@ -380,11 +384,6 @@ def save_run_time_result(
     return new_row
 
 
-def combine_lists_into_list(*lists):
-    combined_list = [list(lst) for lst in lists]
-    return combined_list
-
-
 class StoreRuntime:
     # store run time result
     @staticmethod
@@ -421,7 +420,7 @@ class StoreRuntime:
             raise e
         return syn
 
-    def record_run_time_result_synapse(self, rows: list):
+    def record_run_time_result_synapse(self, rows: MultiRow) -> None:
         # Load existing data from synapse
         syn = self.login_synapse()
 

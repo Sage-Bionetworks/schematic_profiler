@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+from typing import Tuple
 import logging
 from utils import (
+    Row,
     BASE_URL,
     EXAMPLE_SCHEMA_URL,
     HTAN_SCHEMA_URL,
@@ -33,7 +35,7 @@ class GenerateManifest:
 
         self.headers = {"Authorization": f"Bearer {self.token}"}
 
-    def generate_new_manifest_example_model(self):
+    def generate_new_manifest_example_model(self) -> Row:
         """
         Generate a new manifest as a google sheet by using the example data model
         """
@@ -53,7 +55,7 @@ class GenerateManifest:
             status_code_dict=status_code_dict,
         )
 
-    def generate_new_manifest_example_model_excel(self, output_format: str):
+    def generate_new_manifest_example_model_excel(self, output_format: str) -> Row:
         """
         Generate a new manifest as an excel spreadsheet by using the example data model
         Args:
@@ -78,7 +80,7 @@ class GenerateManifest:
             status_code_dict=status_code_dict,
         )
 
-    def generate_new_manifest_HTAN_google_sheet(self):
+    def generate_new_manifest_HTAN_google_sheet(self) -> Row:
         """
         Generate a new manifest as a google sheet by using the HTAN manifest
         """
@@ -98,7 +100,7 @@ class GenerateManifest:
             status_code_dict=status_code_dict,
         )
 
-    def generate_existing_manifest_google_sheet(self):
+    def generate_existing_manifest_google_sheet(self) -> Row:
         """
         Generate a new manifest as a google sheet by using the existing manifest
         """
@@ -124,7 +126,7 @@ class GenerateManifest:
         )
 
 
-def monitor_manifest_generator():
+def monitor_manifest_generator() -> Tuple[Row, Row, Row, Row]:
     logger.info("Monitoring manifest generation")
     gm_example = GenerateManifest(EXAMPLE_SCHEMA_URL)
     row_one = gm_example.generate_new_manifest_example_model()
