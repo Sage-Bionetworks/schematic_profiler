@@ -3,7 +3,7 @@ import logging
 from utils import (
     BASE_URL,
     EXAMPLE_SCHEMA_URL,
-    # HTAN_SCHEMA_URL,
+    HTAN_SCHEMA_URL,
     StoreRuntime,
     save_run_time_result,
     send_example_patient_manifest,
@@ -101,7 +101,7 @@ def monitor_manifest_validator():
     row_one = rows[0]
     row_two = rows[1]
 
-    # vm_htan_manifest = ManifestValidate(HTAN_SCHEMA_URL)
-    # row_three = vm_htan_manifest.validate_HTAN_data_manifest()
+    vm_htan_manifest = ManifestValidate(HTAN_SCHEMA_URL)
+    row_three = vm_htan_manifest.validate_HTAN_data_manifest()
 
-    return row_one, row_two
+    return row_one, row_two, row_three

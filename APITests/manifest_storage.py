@@ -110,7 +110,7 @@ def monitor_manifest_storage():
     row_two = retrieve_project_dataset.retrieve_project_datasets_test()
     row_three = retrieve_project_dataset.retrieve_project_datasets_HTAN()
 
-    row_one, row_two, row_three
+    return row_one, row_two, row_three
 
 
 monitor_manifest_storage()
