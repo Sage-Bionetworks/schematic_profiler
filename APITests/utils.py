@@ -13,13 +13,37 @@ from requests import Response
 from requests.exceptions import InvalidSchema
 from synapseclient import Table
 
-logging.basicConfig(
-    format=("%(levelname)s: [%(asctime)s] %(name)s" " - %(message)s"),
-    level=logging.WARNING,
-    datefmt="%Y-%m-%d %H:%M:%S",
+
+# Create a custom formatter with colors
+class ColoredFormatter(logging.Formatter):
+    COLORS = {
+        "DEBUG": "\033[94m",  # Blue
+        "INFO": "\033[92m",  # Green
+        "WARNING": "\033[93m",  # Yellow
+        "ERROR": "\033[91m",  # Red
+        "CRITICAL": "\033[41m\033[97m",  # White text on Red background
+        "RESET": "\033[0m",  # Reset color
+    }
+
+    def format(self, record):
+        log_level_color = self.COLORS.get(record.levelname, self.COLORS["RESET"])
+        log_message = super().format(record)
+        return f"{log_level_color}{log_message}{self.COLORS['RESET']}"
+
+
+# Create console handler with colored formatter
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(
+    ColoredFormatter(
+        "%(levelname)s: [%(asctime)s] %(name)s" " - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
 )
-logging.getLogger("utils").setLevel(logging.INFO)
-logger = logging.getLogger("utils")
+
+# Add console handler to the logger
+logger = logging.getLogger("")
+logger.setLevel(logging.INFO)
+logger.addHandler(console_handler)
 
 
 # define variables that will be used across scripts
