@@ -75,68 +75,26 @@ def fetch(url: str, params: dict, headers: dict = None) -> Response:
     return response
 
 
-def send_example_patient_manifest(
-    url: str, params: dict, headers: dict = None
+def send_manifest(
+    url: str, params: dict, headers: dict = None, manifest_path=None
 ) -> Response:
-    """
-    sending an example patient manifest
+    """Send an API request to an endpoint
     Args:
-         url (str): the url to run a given api request
-         params (dict): parameters of running the post request
-         headers (dict): headers used for API requests. For example, authorization headers.
+        url (str): the url to run a given api request
+        params (dict): parameters of running the post request
+        headers (dict): headers used for API requests. For example, authorization headers.
+        manifest_path (str): file path of a manifest
     Returns:
         Response: a response object
     """
     wd = os.getcwd()
-    test_manifest_path = os.path.join(
-        wd, "test_manifests/synapse_storage_manifest_patient.csv"
-    )
+    test_manifest_path = os.path.join(wd, "APITests", manifest_path)
 
-    return requests.post(
-        url,
-        params=params,
-        headers=headers,
-        files={"file_name": open(test_manifest_path, "rb")},
-    )
+    if not os.path.exists(test_manifest_path):
+        logger.error(
+            "the manifest does not exist. Please provide a valid manifest file path"
+        )
 
-
-def send_HTAN_biospecimen_manifest_to_validate(
-    url: str, params: dict, headers: dict = None
-) -> Response:
-    """
-    sending a HTAN biospecimen manifest to validate
-    Args:
-        url (str): schematic validation endpoint
-        params (dict): a dictionary of parameters defined in schematic used by validation
-
-    Returns:
-        a response object
-    """
-    wd = os.getcwd()
-    test_manifest_path = os.path.join(
-        wd, "test_manifests/synapse_storage_manifest_HTAN_HMS.csv"
-    )
-    return requests.post(
-        url,
-        params=params,
-        headers=None,
-        files={"file_name": open(test_manifest_path, "rb")},
-    )
-
-
-def send_HTAN_dataflow_manifest(
-    url: str, params: dict, headers: dict = None
-) -> Response:
-    """
-    sending an example dataflow manifest for HTAN
-    Args:
-        url: url of endpoint
-        params: a dictionary of parameters specified by the users
-    """
-    wd = os.getcwd()
-    test_manifest_path = os.path.join(
-        wd, "test_manifests/synapse_storage_manifest_dataflow.csv"
-    )
     return requests.post(
         url,
         params=params,
@@ -150,6 +108,7 @@ def send_post_request(
     params: dict,
     concurrent_threads: int,
     manifest_to_send_func: Callable[[str, dict], Response],
+    file_path_manifest: str,
     headers: dict = None,
 ) -> Tuple[str, float, dict]:
     """
@@ -171,7 +130,12 @@ def send_post_request(
     try:
         # send request and calculate run time
         dt_string, time_diff, status_code_dict = cal_time_api_call_post_request(
-            base_url, params, concurrent_threads, manifest_to_send_func, headers
+            base_url,
+            params,
+            concurrent_threads,
+            manifest_to_send_func,
+            file_path_manifest=file_path_manifest,
+            headers=headers,
         )
     # TO DO: add more details about raising different exception
     # Should exception based on response type?
@@ -279,6 +243,7 @@ def cal_time_api_call_post_request(
     params: dict,
     concurrent_threads: int,
     manifest_to_send_func: Callable[[str, dict], Response],
+    file_path_manifest: str,
     headers: dict = None,
 ) -> Tuple[str, float, dict]:
     """
@@ -300,8 +265,11 @@ def cal_time_api_call_post_request(
 
     # execute concurrent requests
     with ThreadPoolExecutor() as executor:
+        print("file path manifest", file_path_manifest)
         futures = [
-            executor.submit(manifest_to_send_func, url, params, headers)
+            executor.submit(
+                manifest_to_send_func, url, params, headers, file_path_manifest
+            )
             for x in range(concurrent_threads)
         ]
         all_status_code = {"200": 0, "500": 0, "503": 0, "504": 0}

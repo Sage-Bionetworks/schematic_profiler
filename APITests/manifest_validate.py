@@ -9,8 +9,7 @@ from utils import (
     MultiRow,
     StoreRuntime,
     save_run_time_result,
-    send_example_patient_manifest,
-    send_HTAN_biospecimen_manifest_to_validate,
+    send_manifest,
     send_post_request,
 )
 
@@ -47,7 +46,11 @@ class ManifestValidate:
             params["restrict_rules"] = opt
 
             dt_string, time_diff, status_code_dict = send_post_request(
-                base_url, params, CONCURRENT_THREADS, send_example_patient_manifest
+                base_url,
+                params,
+                CONCURRENT_THREADS,
+                send_manifest,
+                file_path_manifest="test_manifests/synapse_storage_manifest_patient.csv",
             )
 
             result = save_run_time_result(
@@ -79,7 +82,8 @@ class ManifestValidate:
             base_url,
             params,
             CONCURRENT_THREADS,
-            send_HTAN_biospecimen_manifest_to_validate,
+            send_manifest,
+            file_path_manifest="test_manifests/synapse_storage_manifest_HTAN_HMS.csv",
         )
 
         return save_run_time_result(
