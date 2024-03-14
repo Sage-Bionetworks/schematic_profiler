@@ -11,8 +11,7 @@ from utils import (
     EXAMPLE_SCHEMA_URL,
     StoreRuntime,
     save_run_time_result,
-    send_example_patient_manifest,
-    send_HTAN_dataflow_manifest,
+    send_manifest,
     send_post_request,
 )
 
@@ -50,6 +49,7 @@ class ManifestSubmit:
         description: str,
         manifest_to_send_func: Callable[[str, dict], Response],
         headers: dict,
+        file_path_manifest: str,
     ) -> MultiRow:
         """
         Submitting a manifest with different parameters set by users and record latency
@@ -60,6 +60,7 @@ class ManifestSubmit:
             description (str): a short description of what the submission is. I.E. submitting XX manifest as
             manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
             headers (dict): headers used for API requests. For example, authorization headers.
+            file_path (str): file path of manifest to send
         """
         combined_list = []
         for opt in data_type_lst:
@@ -72,6 +73,7 @@ class ManifestSubmit:
                     params,
                     CONCURRENT_THREADS,
                     manifest_to_send_func,
+                    file_path_manifest=file_path_manifest,
                     headers=headers,
                 )
 
@@ -125,8 +127,9 @@ class ManifestSubmit:
             record_type_lst,
             params,
             description,
-            send_example_patient_manifest,
+            send_manifest,
             headers=self.headers,
+            file_path_manifest="test_manifests/synapse_storage_manifest_patient.csv",
         )
 
     def submit_dataflow_manifest(self) -> MultiRow:
@@ -145,8 +148,9 @@ class ManifestSubmit:
             record_type_lst,
             params,
             description,
-            send_HTAN_dataflow_manifest,
+            send_manifest,
             headers=self.headers,
+            file_path_manifest="test_manifests/synapse_storage_manifest_dataflow.csv",
         )
 
 
