@@ -1,2 +1,2 @@
 # GenerateManifest class
-::: APITests.manifest-generator.GenerateManifest
+::: APITests.manifest_generator.GenerateManifest

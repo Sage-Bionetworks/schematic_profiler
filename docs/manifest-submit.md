@@ -1,2 +1,2 @@
 # ManifestSubmit class
-::: APITests.manifest-submit.ManifestSubmit
+::: APITests.manifest_submit.ManifestSubmit
