@@ -1,29 +1,30 @@
-import os
 from dataclasses import dataclass
-
-import requests
-from requests import Response
-
-# import from internal package
+from typing import Tuple
+import logging
 from utils import (
     BASE_URL,
     EXAMPLE_SCHEMA_URL,
     HTAN_SCHEMA_URL,
-    record_run_time_result,
+    Row,
+    MultiRow,
+    StoreRuntime,
+    save_run_time_result,
     send_example_patient_manifest,
+    send_HTAN_biospecimen_manifest_to_validate,
     send_post_request,
-    get_access_token,
 )
 
-CONCURRENT_THREADS = 2
+CONCURRENT_THREADS = 1
 
 base_url = f"{BASE_URL}/model/validate"
+
+logger = logging.getLogger("manifest-validate")
 
 
 @dataclass
 class ManifestValidate:
     url: str
-    token: str = get_access_token()
+    token: str = StoreRuntime.get_access_token()
 
     def __post_init__(self):
         self.params: dict = {
@@ -31,28 +32,7 @@ class ManifestValidate:
         }
         self.headers = {"Authorization": f"Bearer {self.token}"}
 
-    @staticmethod
-    def send_HTAN_biospecimen_manifest_to_validate(url: str, params: dict) -> Response:
-        """
-        sending a HTAN biospecimen manifest to validate
-        Args:
-            url (str): schematic validation endpoint
-            params (dict): a dictionary of parameters defined in schematic used by validation
-
-        Returns:
-            a response object
-        """
-        wd = os.getcwd()
-        test_manifest_path = os.path.join(
-            wd, "APITests/test_manifests/synapse_storage_manifest_HTAN_HMS.csv"
-        )
-        return requests.post(
-            url,
-            params=params,
-            files={"file_name": open(test_manifest_path, "rb")},
-        )
-
-    def validate_example_data_manifest(self):
+    def validate_example_data_manifest(self) -> MultiRow:
         """
         validating an example data manifest
         """
@@ -62,6 +42,7 @@ class ManifestValidate:
 
         restrict_rules_opt = [True, False]
         # calculate latency of running /model/validate with different parameters
+        combined_results = []
         for opt in restrict_rules_opt:
             params["restrict_rules"] = opt
 
@@ -69,7 +50,7 @@ class ManifestValidate:
                 base_url, params, CONCURRENT_THREADS, send_example_patient_manifest
             )
 
-            record_run_time_result(
+            result = save_run_time_result(
                 endpoint_name="model/validate",
                 description=f"Validate an example data model using the patient component with restrict_rules set to {opt}. The manifest has 600 rows.",
                 data_schema="example data schema",
@@ -82,7 +63,11 @@ class ManifestValidate:
                 status_code_dict=status_code_dict,
             )
 
-    def validate_HTAN_data_manifest(self):
+            combined_results.append(result)
+
+        return combined_results
+
+    def validate_HTAN_data_manifest(self) -> Row:
         """
         validating a HTAN manifest
         """
@@ -91,10 +76,13 @@ class ManifestValidate:
         params["data_type"] = "Biospecimen"
 
         dt_string, time_diff, status_code_dict = send_post_request(
-            base_url, params, CONCURRENT_THREADS, send_example_patient_manifest
+            base_url,
+            params,
+            CONCURRENT_THREADS,
+            send_HTAN_biospecimen_manifest_to_validate,
         )
 
-        record_run_time_result(
+        return save_run_time_result(
             endpoint_name="model/validate",
             description="Validate a HTAN data model using the biospecimen component with restrict_rules set to False. The manifest has around 700 rows.",
             data_schema="HTAN data schema",
@@ -108,8 +96,15 @@ class ManifestValidate:
         )
 
 
-vm_example_manifest = ManifestValidate(EXAMPLE_SCHEMA_URL)
-vm_example_manifest.validate_example_data_manifest()
+def monitor_manifest_validator() -> Tuple[Row, Row, Row]:
+    logger.info("Monitoring manifest validation")
+    vm_example_manifest = ManifestValidate(EXAMPLE_SCHEMA_URL)
+    rows = vm_example_manifest.validate_example_data_manifest()
+    # parse the results
+    row_one = rows[0]
+    row_two = rows[1]
 
-vm_htan_manifest = ManifestValidate(HTAN_SCHEMA_URL)
-vm_htan_manifest.validate_HTAN_data_manifest()
+    vm_htan_manifest = ManifestValidate(HTAN_SCHEMA_URL)
+    row_three = vm_htan_manifest.validate_HTAN_data_manifest()
+
+    return row_one, row_two, row_three

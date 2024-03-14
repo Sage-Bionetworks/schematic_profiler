@@ -1,23 +1,25 @@
-import os
 import time
 from dataclasses import dataclass
-from typing import Callable
-
-import requests
+from typing import Callable, Tuple
 from requests import Response
-
+import logging
 from utils import (
+    Row,
+    MultiRow,
     BASE_URL,
     DATA_FLOW_SCHEMA_URL,
     EXAMPLE_SCHEMA_URL,
-    get_access_token,
-    record_run_time_result,
+    StoreRuntime,
+    save_run_time_result,
     send_example_patient_manifest,
+    send_HTAN_dataflow_manifest,
     send_post_request,
 )
 
 CONCURRENT_THREADS = 1
 base_url = f"{BASE_URL}/model/submit"
+
+logger = logging.getLogger("manifest-submit")
 
 
 @dataclass
@@ -27,7 +29,7 @@ class ManifestSubmit:
     asset_view: str = "syn51376649"
     restrict_rules: bool = False
     use_schema_label: bool = True
-    token: str = get_access_token()
+    token: str = StoreRuntime.get_access_token()
 
     def __post_init__(self):
         self.params = {
@@ -36,29 +38,9 @@ class ManifestSubmit:
             "asset_view": self.asset_view,
             "restrict_rules": self.restrict_rules,
             "use_schema_label": self.use_schema_label,
+            "data_model_labels": "class_label",
         }
         self.headers = {"Authorization": f"Bearer {self.token}"}
-
-    @staticmethod
-    def send_HTAN_dataflow_manifest(
-        url: str, params: dict, headers: dict = None
-    ) -> Response:
-        """
-        sending an example dataflow manifest for HTAN
-        Args:
-            url: url of endpoint
-            params: a dictionary of parameters specified by the users
-        """
-        wd = os.getcwd()
-        test_manifest_path = os.path.join(
-            wd, "test_manifests/synapse_storage_manifest_dataflow.csv"
-        )
-        return requests.post(
-            url,
-            params=params,
-            headers=headers,
-            files={"file_name": open(test_manifest_path, "rb")},
-        )
 
     @staticmethod
     def execute_manifest_submission(
@@ -68,7 +50,7 @@ class ManifestSubmit:
         description: str,
         manifest_to_send_func: Callable[[str, dict], Response],
         headers: dict,
-    ):
+    ) -> MultiRow:
         """
         Submitting a manifest with different parameters set by users and record latency
         Args:
@@ -79,6 +61,7 @@ class ManifestSubmit:
             manifest_to_send_func (Callable): a function that sends a post request that upload a manifest to be sent
             headers (dict): headers used for API requests. For example, authorization headers.
         """
+        combined_list = []
         for opt in data_type_lst:
             for record_type in record_type_lst:
                 params["data_type"] = opt
@@ -107,7 +90,7 @@ class ManifestSubmit:
                 else:
                     data_schema = None
 
-                record_run_time_result(
+                result = save_run_time_result(
                     endpoint_name="model/submit",
                     description=f"{description} {record_type} with validation set to {validate_setting}. The manifest has {num_rows} rows.",
                     data_schema=data_schema,
@@ -120,21 +103,24 @@ class ManifestSubmit:
                     latency=time_diff,
                     status_code_dict=status_code_dict,
                 )
+                combined_list.append(result)
                 time.sleep(2)
 
-    def submit_example_manifeset_patient(self):
+        return combined_list
+
+    def submit_example_manifeset_patient(self) -> MultiRow:
         """
         submitting an example data manifest
         """
         params = self.params
         # update parameter.
         params["table_manipulation"] = "replace"
-        data_type_lst = ["Patient", None]
+        data_type_lst = [None]
         record_type_lst = ["table_and_file", "file_only"]
 
         description = "Submitting an example manifest as"
 
-        self.execute_manifest_submission(
+        return self.execute_manifest_submission(
             data_type_lst,
             record_type_lst,
             params,
@@ -143,7 +129,7 @@ class ManifestSubmit:
             headers=self.headers,
         )
 
-    def submit_dataflow_manifest(self):
+    def submit_dataflow_manifest(self) -> MultiRow:
         params = self.params
         # update parameter.
         params["table_manipulation"] = "replace"
@@ -154,18 +140,25 @@ class ManifestSubmit:
         record_type_lst = ["file_only"]
         description = "Submitting a dataflow manifest for HTAN as"
 
-        self.execute_manifest_submission(
+        return self.execute_manifest_submission(
             data_type_lst,
             record_type_lst,
             params,
             description,
-            self.send_HTAN_dataflow_manifest,
+            send_HTAN_dataflow_manifest,
             headers=self.headers,
         )
 
 
-sm_example_manifest = ManifestSubmit(EXAMPLE_SCHEMA_URL)
-sm_example_manifest.submit_example_manifeset_patient()
+def monitor_manifest_submission() -> Tuple[Row, Row, Row]:
+    logger.info("Monitoring manifest submission")
+    sm_example_manifest = ManifestSubmit(EXAMPLE_SCHEMA_URL)
+    rows = sm_example_manifest.submit_example_manifeset_patient()
 
-sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
-sm_dataflow_manifest.submit_dataflow_manifest()
+    sm_dataflow_manifest = ManifestSubmit(DATA_FLOW_SCHEMA_URL)
+    row_three = sm_dataflow_manifest.submit_dataflow_manifest()
+
+    return rows[0], rows[1], row_three[0]
+
+
+monitor_manifest_submission()

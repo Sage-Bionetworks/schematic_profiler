@@ -17,15 +17,16 @@ concurrency:
   cancel-in-progress: true
 jobs:
   Benchmarch-Latency:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04-4core-16GBRAM-150GBSSD
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: 'pip' # caching pip dependencies
 
       - name: Activate a virtual environment
         run: |
@@ -43,6 +44,4 @@ jobs:
         run:
           |
           cd APITests
-          python3 manifest-storage.py
-          python3 manifest-validate.py
-          python3 manifest-submit.py
+          python3 run_all_parallel.py
