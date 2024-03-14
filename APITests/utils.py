@@ -265,7 +265,6 @@ def cal_time_api_call_post_request(
 
     # execute concurrent requests
     with ThreadPoolExecutor() as executor:
-        print("file path manifest", file_path_manifest)
         futures = [
             executor.submit(
                 manifest_to_send_func, url, params, headers, file_path_manifest
