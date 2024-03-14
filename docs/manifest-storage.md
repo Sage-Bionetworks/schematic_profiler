@@ -1,5 +1,4 @@
 # ManifestStorage class
-::: APITests.manifest-storage.ManifestStorage
-::: APITests.manifest-storage.RetrieveAssetView
-::: APITests.manifest-storage.RestrieveProjectDataset
-
+::: APITests.manifest_storage.ManifestStorage
+::: APITests.manifest_storage.RetrieveAssetView
+::: APITests.manifest_storage.RestrieveProjectDataset

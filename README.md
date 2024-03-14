@@ -10,12 +10,12 @@ Note: schematic profiler does not check if the outputs returned are desirable. T
 ## How to run schematic profiler?
 For running schematic profiler locally:
 * step 1: Clone schematic profiler repository
-* step 2: Check out the develop branch
+* step 2: Check out the develop branch. Create a virtual environment and install required pacakges using requirements.txt.
 * step 3: Save your synapse access token in `.synapseConfig` as an environment variable by running: `export TOKEN=YOUR SYNAPSE ACCESS TOKEN`
-* step 4: Run individual python files after `cd APITests`. For example, for testing /manifest/generate endpoints, please run: `python3 manifest-generator.py`. If one test does not return 200, schematic profiler would print out the parameters being used for that test for you to reproduce this issue.
+* step 4: Run `run_all_parallel.py` script to run all the tests in schematic profiler.
 * step 5: View results and report issues. All the outputs are automatically saved in a synapse table [here](https://www.synapse.org/#!Synapse:syn51385540/tables/query/eyJzcWwiOiJTRUxFQ1QgKiBGUk9NIHN5bjUxMzg1NTQwIiwgImluY2x1ZGVFbnRpdHlFdGFnIjp0cnVlLCAib2Zmc2V0IjoyMjUsICJsaW1pdCI6MjV9). If the result is 5xx, please first try reproducing the errors using the same parameters that schematic profiler was using manually and then try reproducing the errors using `develop` branch of schematic library. Try to figure out if the errors are related to running schematic profiler or the errors are related to schematic/schematic API infrastructure. If it is a schematic related issue, please open a ticket and report to the team. If it is a profiler issue, please inform the team and see if other team members could reproduce the issue and open a ticket if needed.
 
-For running schematic profiler remotely: please feel free to use the github action [here](https://github.com/Sage-Bionetworks/schematic_profiler/actions/workflows/workflow.yml).
+For running schematic profiler remotely: please feel free to use the github action [here](https://github.com/Sage-Bionetworks/schematic_profiler/actions/workflows/workflow.yml) and trigger a run manually there. After the GH action finished, please visit `syn51385540` synapse table and click on the last page to view the results.
 
 For getting started, I would recommmend running schematic profiler locally because if you run into a 500/504/503 error, schematic profiler would print out the combination of parameters that is causing the error.
 
